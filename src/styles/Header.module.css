@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg);
+    margin-bottom: 40px;
+}
+
+.title {
+    color: var(--accent);
+    cursor: default;
+    font-weight: 600;
+}
+
+.link {
+    margin-right: 10px;
+    transition: 0.2s ease-in-out;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+}
+
+.link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent)
+}
