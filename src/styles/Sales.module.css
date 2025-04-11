@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .input{
@@ -45,6 +46,7 @@
     background-color: #fff;
     padding: 10px;
     margin-bottom: 5px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
 .wrapper {
@@ -54,10 +56,16 @@
 .wrapper button{
     width: 100%;
     margin-bottom: 5px;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn {
+  transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .btn:hover {
   background-color: #8a60d3;
+  transform: scale(0.95);
 }
 
 .button {
@@ -107,6 +115,11 @@
     border-color: var(--accent);
     margin-bottom: 10px;
     width: 100%;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .salesBtn:hover {
+    transform: scale(0.95);
   }
   
   .formPanel {
@@ -149,11 +162,10 @@
   }
   
   .searchInput {
-    width: 100%;
+    width: 95%;
     height: 45px;
     font-size: 14px;
     padding-left: 2.5rem;
-    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
     border: 0;
     border-radius: 12px;
     background-color: #212121;
@@ -169,16 +181,12 @@
     color: #bdbecb;
   }
   
-  .searchInput:hover {
-    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+  .searchInput:hover, .searchInput:focus  {
+    width: 100%;
   }
   
-  .searchInput:active {
+  .searchInput:active, .input:active, .salesBtn:active {
     transform: scale(0.95);
-  }
-  
-  .searchInput:focus {
-    box-shadow: 0 0 0 2.5px #2f303d;
   }
   
   .searchIcon {
@@ -195,7 +203,6 @@
     width: 100%;
     padding: 10px;
     font-size: 14px;
-    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
     border: 0;
     border-radius: 12px;
     background-color: #212121;
