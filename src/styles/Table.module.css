@@ -14,9 +14,8 @@ thead {
     background: #312f38;
 }
 
-tbody tr {
-    font-family: OpenSans-Regular;
-    font-size: 15px;
+tbody tr, tbody tr p {
+    font-size: 14px;
     color: #505050;
     line-height: 1.2;
     font-weight: unset;
@@ -27,5 +26,51 @@ tr {
 }
 
 tbody tr:nth-child(even) {
-    background-color: #d8d7d7;
+    background-color: #acacac;
+}
+
+tbody tr td {
+    text-align: center;
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.deleteBtn {
+    background-color: #8a60d3;
+}
+
+
+.deleteBtn:hover {
+    background-color: var(--accent);
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+.delivered {
+    background-color: #e0d9ff;
+  }
+  
+.late {
+background-color: var(--warning-accent);
+color: white;
+}
+
+@media (max-width: 768px) {
+table {
+    width: 100%;
+    overflow-x: auto;
+}
+  
+tbody tr td {
+    padding: 5px;
+    font-size: 12px;
+}
+  
+th, td {
+    min-width: 500px;
+}
 }

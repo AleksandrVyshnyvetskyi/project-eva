@@ -3,13 +3,17 @@ import dayjs from "dayjs";
 import { v4 as uuid } from "uuid";
 import styles from '../../styles/Sales.module.css'
 
-const SaleForm = ({ onAdd }) => {  // Передаем функцию onAdd через пропсы
+const SaleForm = ({ onAdd }) => {  
     const [form, setForm] = useState({
-        items: [''], // Начальный массив с одним полем для item
+        orderNumber: '',
+        items: [''],
         date: dayjs().format('YYYY-MM-DD'),
         client: '',
         address: '',
-        payment: ''
+        payment: '',
+        phone: '',
+        amount: '',
+        ttn: ''
     });
 
     const handleChange = (e, index) => {
@@ -24,48 +28,58 @@ const SaleForm = ({ onAdd }) => {  // Передаем функцию onAdd че
     };
 
     const handleAddItem = () => {
-        setForm((prev) => ({ ...prev, items: [...prev.items, ''] })); // Добавляем новый элемент в массив
+        setForm((prev) => ({ ...prev, items: [...prev.items, ''] }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Проверка, что обязательные поля заполнены
-        if (!form.items.some(item => item.trim()) || !form.client) {
+        if (!form.items.some(item => item.trim()) || !form.client || !form.amount || !form.ttn) {
             alert("Будь ласка, заповніть усі обов'язкові поля!");
             return;
         }
 
-        // Добавляем объект с уникальным id
         onAdd({
             ...form,
             id: uuid(),
-            items: form.items.filter(item => item.trim()) // Убираем пустые элементы
+            items: form.items.filter(item => item.trim())
         });
 
-        // Сброс формы после отправки
         setForm({
+            orderNumber: '',
             items: [''],
             date: dayjs().format('YYYY-MM-DD'),
             client: '',
             address: '',
-            payment: ''
+            payment: '',
+            phone: '',
+            amount: '',
+            ttn: ''
         });
     };
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.wrapper}>{form.items.map((item, index) => (
-                <input key={index}
-                    className={styles.input}
-                    name="item"
-                    placeholder="Товар на відправку"
-                    value={item}
-                    onChange={(e) => handleChange(e, index)}
-                    required
-                />
+            <input
+                className={styles.input}
+                name="orderNumber"
+                placeholder="Номер замовлення"
+                value={form.orderNumber}
+                onChange={handleChange}
+                required
+            />
+            <div className={styles.wrapper}>
+                {form.items.map((item, index) => (
+                    <input key={index}
+                        className={styles.input}
+                        name="item"
+                        placeholder="Товар на відправку"
+                        value={item}
+                        onChange={(e) => handleChange(e, index)}
+                        required
+                    />
                 ))}
-                <button type="button" onClick={handleAddItem}>Додати товар</button>
+                <button type="button" className={styles.btn} onClick={handleAddItem}>Додати товар</button>
             </div>
             
             <input
@@ -86,9 +100,34 @@ const SaleForm = ({ onAdd }) => {  // Передаем функцию onAdd че
             />
             <input
                 className={styles.input}
+                name="phone"
+                placeholder="Номер телефону"
+                value={form.phone}
+                onChange={handleChange}
+                required
+            />
+            <input
+                className={styles.input}
                 name="address"
                 placeholder="Адреса"
                 value={form.address}
+                onChange={handleChange}
+                required
+            />
+            <input
+                className={styles.input}
+                name="amount"
+                type="number"
+                placeholder="Сума замовлення"
+                value={form.amount}
+                onChange={handleChange}
+                required
+            />
+            <input
+                className={styles.input}
+                name="ttn"
+                placeholder="ТТН"
+                value={form.ttn}
                 onChange={handleChange}
                 required
             />
@@ -99,7 +138,7 @@ const SaleForm = ({ onAdd }) => {  // Передаем функцию onAdd че
                 onChange={handleChange}
                 required
             >
-                <option selected="selected" disabled="disabled">Оберіть спосіб оплати</option>
+                <option value="" disabled>Оберіть спосіб оплати</option>
                 <option>Готівка</option>
                 <option>Карта</option>
                 <option>Р/Р</option>

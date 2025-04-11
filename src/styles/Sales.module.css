@@ -1,5 +1,30 @@
 .title {
-    margin-bottom: 20px;
+    margin-bottom: 60px;
+    padding: 30px;
+    border-bottom: 2px solid #212121;
+    font-size: 28px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  position: relative;
+  margin-bottom: 60px;
+}
+
+.left, .right {
+  flex-shrink: 0;
+}
+
+
+.right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .form {
@@ -7,13 +32,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 60px;
+    padding: 10px;
 }
 
 .input{
     border: 1px solid var(--text);
     border-radius: 4px;
-    width: 250px;
+    width: 25vw;
+    font-size: 16px;
     font-weight: 500;
     color: var(--bg);
     background-color: #fff;
@@ -22,7 +48,7 @@
 }
 
 .wrapper {
-    width: 250px;
+    width: 25vw;
 }
 
 .wrapper button{
@@ -30,15 +56,13 @@
     margin-bottom: 5px;
 }
 
-select {
-    font-weight: 600;
+.btn:hover {
+  background-color: #8a60d3;
 }
-
 
 .button {
     cursor: pointer;
     position: relative;
-    max-width: 20%;
     padding: 10px 24px;
     font-size: 18px;
     color: var(--accent);
@@ -60,7 +84,7 @@ select {
     border-radius: inherit;
     scale: 0;
     z-index: -1;
-    background-color: var(--second-accent);
+    background-color: var(--accent);
     transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
   }
   
@@ -70,10 +94,167 @@ select {
   
   .button:hover {
     scale: 1.1;
-    box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+    color: var(--text);
+    box-shadow: 0 0px 12px rgba(193, 163, 98,0.4);
   }
   
   .button:active {
     scale: 1;
   }
+
+  .createBtn {
+    background-color: transparent;
+    border-color: var(--accent);
+    margin-bottom: 10px;
+    width: 100%;
+  }
   
+  .formPanel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+  }
+  
+  .formPanel.visible {
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  .searchPanel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+  }
+  
+  .searchPanel.visible {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  .searchBtn {
+    background-color: var(--bg);
+    border-color: var(--accent);
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .group {
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+  }
+  
+  .searchInput {
+    width: 250px;
+    height: 45px;
+    font-size: 14px;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color: #212121;
+    outline: none;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: text;
+    z-index: 0;
+    margin-bottom: 10px;
+  }
+  
+  .searchInput::placeholder {
+    color: #bdbecb;
+  }
+  
+  .searchInput:hover {
+    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+  }
+  
+  .searchInput:active {
+    transform: scale(0.95);
+  }
+  
+  .searchInput:focus {
+    box-shadow: 0 0 0 2.5px #2f303d;
+  }
+  
+  .searchIcon {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    fill: #bdbecb;
+    width: 1.2rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .searchSelect {
+    width: 250px;
+    padding: 10px;
+    font-size: 14px;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color: #212121;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .input {
+      width: 80%;
+      font-size: 14px;
+    }
+
+    .wrapper{
+      width: 100%;
+    }
+  
+    .createBtn, .searchBtn {
+      width: 100%;
+    }
+  
+    .searchInput {
+      width: 90%;
+    }
+  
+    .searchSelect {
+      width: 90%;
+    }
+  
+    .group {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .formPanel {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .input {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      gap: 20px;
+    }
+  
+    .input {
+      width: 100%;
+    }
+  
+    .button {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+  }
