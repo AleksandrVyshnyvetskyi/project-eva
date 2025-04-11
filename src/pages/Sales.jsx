@@ -1,25 +1,41 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, updateDoc, getDoc } from "firebase/firestore";
 import dayjs from "dayjs";
+import 'dayjs/locale/uk';
+import * as XLSX from 'xlsx';
 import SaleForm from "../components/sales/SaleForm";
 import SalesTable from "../components/sales/SalesTable";
 import styles from '../styles/Sales.module.css';
 
 const Sales = () => {
+    dayjs.locale('uk');
     const [sales, setSale] = useState([]);
     const [received, setReceived] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
     const [isInputVisible, setIsInputVisible] = useState(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [currentMonth, setCurrentMonth] = useState(dayjs().month());
+    const [currentYear, setCurrentYear] = useState(dayjs().year());
 
     useEffect(() => {
         const fetchSales = async () => {
             const querySnapshot = await getDocs(collection(db, "sales"));
-            const salesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const salesData = querySnapshot.docs.filter(doc => doc.exists()).map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+    
+            const salesReceived = salesData.reduce((acc, sale) => {
+                acc[sale.id] = sale.received || false;
+                return acc;
+            }, {});
+    
             setSale(salesData);
+            setReceived(salesReceived);
         };
+    
         fetchSales();
     }, []);
 
@@ -31,6 +47,7 @@ const Sales = () => {
         try {
             const docRef = await addDoc(collection(db, "sales"), newSale);
             setSale(prevSales => [...prevSales, { id: docRef.id, ...newSale }]);
+            setReceived(prev => ({ ...prev, [docRef.id]: false }));
         } catch (e) {
             console.error("Ошибка при добавлении документа: ", e);
         }
@@ -41,47 +58,42 @@ const Sales = () => {
     };
 
     const handleCheckboxChange = async (id) => {
-        setReceived((prev) => {
-            const updatedReceived = { ...prev, [id]: !prev[id] };
-            return updatedReceived;
-        });
+        if (!id) return;
     
-        const saleRef = doc(db, "sales", id);
-        await updateDoc(saleRef, {
-            received: !received[id],
-        });
+        const newValue = !received[id];
+        setReceived((prev) => ({ ...prev, [id]: newValue }));
+    
+        try {
+            const saleRef = doc(db, "sales", id);
+            const saleSnapshot = await getDoc(saleRef); 
+    
+            if (saleSnapshot.exists()) {
+                await updateDoc(saleRef, { received: newValue });
+            } else {
+                setReceived(prev => {
+                    const { [id]: removed, ...rest } = prev; 
+                    return rest;
+                });
+            }
+        } catch (error) {
+            console.error("Ошибка при обновлении received:", error);
+        }
     };
-
-    useEffect(() => {
-        const fetchSales = async () => {
-            const querySnapshot = await getDocs(collection(db, "sales"));
-            const salesData = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-    
-            // Формируем объект для хранения состояния чекбоксов
-            const salesReceived = salesData.reduce((acc, sale) => {
-                acc[sale.id] = sale.received || false; // По умолчанию false, если нет значения в Firebase
-                return acc;
-            }, {});
-    
-            setSale(salesData);
-            setReceived(salesReceived);
-        };
-    
-        fetchSales();
-    }, []);
 
     const normalizePhoneNumber = (phone) => {
         return phone.replace(/[^\d]/g, '').toLowerCase();
     };
-    
+
     const normalizeString = (str) => {
         return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     };
 
-    const sortedSales = sales
+    const filteredByMonth = sales.filter(sale => {
+        const saleDate = dayjs(sale.date);
+        return saleDate.month() === currentMonth && saleDate.year() === currentYear;
+    });
+
+    const sortedSales = filteredByMonth
         .filter(sale => {
             const normalizedSearchQuery = normalizeString(searchQuery);
             const normalizedPhone = normalizePhoneNumber(sale.phone);
@@ -102,22 +114,75 @@ const Sales = () => {
 
             return searchMatch;
         })
-        .sort((a, b) => dayjs(b.date).isAfter(dayjs(a.date)) ? 1 : -1);
+        .sort((a, b) => {
+            const dateA = dayjs(a.date);
+            const dateB = dayjs(b.date);
+            return dateB.isBefore(dateA) ? 1 : -1;
+        });
+
+    const downloadExcel = () => {
+        const filteredSales = sales.filter(sale => {
+            const saleDate = dayjs(sale.date);
+            return saleDate.month() === currentMonth && saleDate.year() === currentYear;
+        });
+
+        const sortedSales = filteredSales.sort((a, b) => {
+            const dateA = dayjs(a.date);
+            const dateB = dayjs(b.date);
+            return dateB.isBefore(dateA) ? 1 : -1;
+        });
+
+        const dataForExcel = sortedSales.map(sale => ({
+            "Номер замовлення": sale.orderNumber,
+            "Дата": dayjs(sale.date).format('DD.MM.YYYY'),
+            "Товар": sale.items.join(', '),
+            "Ім'я клієнта": sale.client,
+            "Телефон": sale.phone,
+            "Адреса": sale.address,
+            "Форма оплати": sale.payment,
+            "Сума": sale.amount,
+            "ТТН": sale.ttn,
+            "Отримано": sale.received ? 'Так' : 'Ні'
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(dataForExcel);
+
+        const wscols = dataForExcel[0] && Object.keys(dataForExcel[0]).map(col => ({
+            wch: Math.max(...dataForExcel.map(row => row[col].toString().length)) + 2
+        }));
+        ws['!cols'] = wscols;
+
+        dataForExcel.forEach((sale, rowIndex) => {
+            if (sale["Отримано"] === 'Так') {
+                const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 1, c: 9 });
+                if (ws[cellAddress]) {
+                    ws[cellAddress].s = {
+                        fill: { fgColor: { rgb: "90EE90" } },
+                    };
+                }
+            }
+        });
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Замовлення");
+
+        XLSX.writeFile(wb, `Інтернет_продажі_${dayjs().month(currentMonth).year(currentYear).format('MMMM_YYYY')}.xlsx`);
+    };
 
     return (
         <>
             <h2 className={styles.title}>📦 Продажі:</h2>
             <div className={styles.container}>
-            <div className={styles.left}>
-                <button className={styles.createBtn} onClick={handleFormToggle}>
-                    {isFormVisible ? 'Сховати форму ↑' : 'Створити замовлення ↓'}
-                </button>
-                <div className={`${styles.formPanel} ${isFormVisible ? styles.visible : ''}`}>
-                    <SaleForm onAdd={addSale} />
+                <div className={styles.left}>
+                    <button className={styles.salesBtn} onClick={handleFormToggle}>
+                        {isFormVisible ? 'Сховати форму ↑' : 'Створити замовлення ↓'}
+                    </button>
+                    <div className={`${styles.formPanel} ${isFormVisible ? styles.visible : ''}`}>
+                        <SaleForm onAdd={addSale} />
+                    </div>
                 </div>
-            </div>
                 <div className={styles.right}>
-                    <button className={styles.searchBtn} onClick={handleButtonClick}>
+                    <button className={styles.salesBtn} onClick={handleButtonClick}>
                         {isInputVisible ? 'Сховати ↑' : 'Пошук ↓'}
                     </button>
                     <div className={`${styles.searchPanel} ${isInputVisible ? styles.visible : ''}`}>
@@ -148,7 +213,38 @@ const Sales = () => {
                     </div>
                 </div>
             </div>
-            <SalesTable data={sortedSales} received={received} setReceived={setReceived} />
+
+            <div className={styles.monthNavigation}>
+                <div>
+                    <button className={styles.salesBtn} onClick={() => {
+                        const newDate = dayjs().year(currentYear).month(currentMonth).subtract(1, 'month');
+                        setCurrentMonth(newDate.month());
+                        setCurrentYear(newDate.year());
+                    }}>← Назад</button>
+                </div>
+                <div>
+                    <p>{dayjs().year(currentYear).month(currentMonth).format('MMMM YYYY').replace(/^./, c => c.toUpperCase())}</p>
+                </div>
+                <div>
+                    {(currentMonth !== dayjs().month() || currentYear !== dayjs().year()) && (
+                        <button className={styles.salesBtn} onClick={() => {
+                            const newDate = dayjs().year(currentYear).month(currentMonth).add(1, 'month');
+                            setCurrentMonth(newDate.month());
+                            setCurrentYear(newDate.year());
+                        }}>Вперед → </button>
+                    )}
+                </div>
+            </div>
+            <SalesTable
+                data={sortedSales}
+                received={received}
+                handleCheckboxChange={handleCheckboxChange}
+            />
+            <div className={styles.containerForDownloadBtn}>
+                <button className={styles.button} onClick={downloadExcel}>
+                    Завантажити Excel
+                </button>
+            </div>
         </>
     );
 };

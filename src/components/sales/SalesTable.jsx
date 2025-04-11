@@ -1,22 +1,15 @@
 import dayjs from 'dayjs';
 import styles from '../../styles/Table.module.css';
 
-const SalesTable = ({ data, received, setReceived }) => {
+const SalesTable = ({ data, received, handleCheckboxChange }) => {
     if (!data.length) return <p>Поки що немає продажів...</p>;
-
-    const handleCheckboxChange = (id) => {
-        setReceived((prev) => {
-            const updatedReceived = { ...prev, [id]: !prev[id] };
-            return updatedReceived;
-        });
-    };
 
     const isOldOrder = (date) => {
         return dayjs().diff(dayjs(date), 'day') >= 9;
     };
 
     return (
-        <table border="1" cellPadding={5}>
+        <table className={styles.table}>
             <thead>
                 <tr>
                     <th>№</th>
