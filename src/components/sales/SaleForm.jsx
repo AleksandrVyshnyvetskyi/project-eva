@@ -1,6 +1,5 @@
 import { useState } from "react";
 import dayjs from "dayjs";
-import { v4 as uuid } from "uuid";
 import styles from '../../styles/Sales.module.css'
 
 const SaleForm = ({ onAdd }) => {  
@@ -41,7 +40,6 @@ const SaleForm = ({ onAdd }) => {
 
         onAdd({
             ...form,
-            id: uuid(),
             items: form.items.filter(item => item.trim())
         });
 
@@ -144,10 +142,10 @@ const SaleForm = ({ onAdd }) => {
                 <option>Р/Р</option>
                 <option>Оплата частинами ПП</option>
                 <option>Оплата частинами МБ</option>
-                <option>Оплата частинами ПУМБ</option>
-                <option>Плати пізніше</option>
+                <option>Банківський переказ</option>
             </select>
-            <button className={styles.button} type="submit">Додати</button>
+
+            <button type="submit" className={styles.button}>Додати</button>
         </form>
     );
 };
