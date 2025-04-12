@@ -3,8 +3,8 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import styles from '../../styles/Repairs.module.css';
-import stylesTable from '../../styles/Table.module.css';
+import styles from "../../styles/Repairs.module.css";
+import stylesTable from "../../styles/Table.module.css";
 
 const RepairOrdersTable = () => {
     const [repairOrders, setRepairOrders] = useState([]);
@@ -13,8 +13,10 @@ const RepairOrdersTable = () => {
     }
     useEffect(() => {
         const fetchRepairOrders = async () => {
-            const querySnapshot = await getDocs(collection(db, "repair_orders"));
-            const ordersData = querySnapshot.docs.map(doc => ({
+            const querySnapshot = await getDocs(
+                collection(db, "repair_orders")
+            );
+            const ordersData = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
@@ -67,41 +69,52 @@ const RepairOrdersTable = () => {
                         .sort((a, b) => {
                             const dateA = dayjs(a.dateReceived);
                             const dateB = dayjs(b.dateReceived);
-                            return dateB - dateA; 
+                            return dateB - dateA;
                         })
                         .map((order) => {
-                            const isDelayed = order.repairStatusDate &&
+                            const isDelayed =
+                                order.repairStatusDate &&
                                 dayjs().diff(
-                                    dayjs(order.repairStatusDate.toDate?.() || order.repairStatusDate),
+                                    dayjs(
+                                        order.repairStatusDate.toDate?.() ||
+                                            order.repairStatusDate
+                                    ),
                                     "days"
                                 ) > 14;
 
-                        const rowStyle = {
-                            backgroundColor: order.isReturned
-                                ? "lightgreen"
-                                : isDelayed
-                                ? "coral"
-                                : "transparent",
-                        };
+                            const rowStyle = {
+                                backgroundColor: order.isReturned
+                                    ? "lightgreen"
+                                    : isDelayed
+                                    ? "coral"
+                                    : "transparent",
+                            };
 
-                        return (
-                            <tr key={order.id} style={rowStyle}>
-                                <td>{dayjs(order.dateReceived).format("DD.MM.YYYY")}</td>
-                                <td>{order.brand}</td>
-                                <td>{order.model}</td>
-                                <td>{order.imei}</td>
-                                <td>{order.store}</td>
-                                <td>{order.service}</td>
-                                <td>
-                                    <input className={stylesTable.checkbox}
-                                        type="checkbox"
-                                        checked={order.isReturned}
-                                        onChange={() => handleMarkAsReturned(order.id)}
-                                    />
-                                </td>
-                            </tr>
-                        );
-                    })}
+                            return (
+                                <tr key={order.id} style={rowStyle}>
+                                    <td>
+                                        {dayjs(order.dateReceived).format(
+                                            "DD.MM.YYYY"
+                                        )}
+                                    </td>
+                                    <td>{order.brand}</td>
+                                    <td>{order.model}</td>
+                                    <td>{order.imei}</td>
+                                    <td>{order.store}</td>
+                                    <td>{order.service}</td>
+                                    <td>
+                                        <input
+                                            className={stylesTable.checkbox}
+                                            type="checkbox"
+                                            checked={order.isReturned}
+                                            onChange={() =>
+                                                handleMarkAsReturned(order.id)
+                                            }
+                                        />
+                                    </td>
+                                </tr>
+                            );
+                        })}
                 </tbody>
             </table>
         </div>

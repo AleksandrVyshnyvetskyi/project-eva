@@ -1,7 +1,7 @@
-import StatisticsWithChart from "../components/statistic/Statistic"
+import StatisticsWithChart from "../components/statistic/Statistic";
 
 const Analytics = () => {
-    return <StatisticsWithChart/>
-}
+    return <StatisticsWithChart />;
+};
 
-export default Analytics
+export default Analytics;

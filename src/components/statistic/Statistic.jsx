@@ -13,9 +13,16 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import styles from '../../styles/Statistic.module.css'
+import styles from "../../styles/Statistic.module.css";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const StatisticsWithChart = () => {
     const [orders, setOrders] = useState([]);
@@ -44,7 +51,10 @@ const StatisticsWithChart = () => {
     const filteredOrders = filterOrdersByMonth(currentMonth, currentYear);
 
     const totalDaysInMonth = dayjs().month(currentMonth).daysInMonth();
-    const allDays = Array.from({ length: totalDaysInMonth }, (_, index) => index + 1);
+    const allDays = Array.from(
+        { length: totalDaysInMonth },
+        (_, index) => index + 1
+    );
 
     const ordersByDay = allDays.map((day) => {
         const ordersForDay = filteredOrders.filter(
@@ -55,7 +65,8 @@ const StatisticsWithChart = () => {
 
     const receivedOrdersByDay = allDays.map((day) => {
         const receivedOrdersForDay = filteredOrders.filter(
-            (order) => dayjs(order.date).date() === day && order.received === true
+            (order) =>
+                dayjs(order.date).date() === day && order.received === true
         );
         return receivedOrdersForDay.length;
     });
@@ -84,13 +95,23 @@ const StatisticsWithChart = () => {
             },
             title: {
                 display: true,
-                text: `Статистика інтернет продажів за ${dayjs().month(currentMonth).locale('uk').format('MMMM YYYY').replace(/^./, (match) => match.toUpperCase())}`,
+                text: `Статистика інтернет продажів за ${dayjs()
+                    .month(currentMonth)
+                    .locale("uk")
+                    .format("MMMM YYYY")
+                    .replace(/^./, (match) => match.toUpperCase())}`,
             },
             tooltip: {
                 callbacks: {
                     label: (tooltipItem) => {
-                        const formattedDate = dayjs().month(currentMonth).date(tooltipItem.label).format('DD.MM.YYYY');
-                        const label = tooltipItem.datasetIndex === 0 ? "Кількість замовлень" : "Отримані замовлення";
+                        const formattedDate = dayjs()
+                            .month(currentMonth)
+                            .date(tooltipItem.label)
+                            .format("DD.MM.YYYY");
+                        const label =
+                            tooltipItem.datasetIndex === 0
+                                ? "Кількість замовлень"
+                                : "Отримані замовлення";
                         return `${label}: ${tooltipItem.raw}\nДень: ${formattedDate}`;
                     },
                 },
@@ -102,46 +123,78 @@ const StatisticsWithChart = () => {
         <>
             <h2 className={styles.title}>📊 Статистика:</h2>
             <div className={styles.container}>
-            <div className={styles.buttonWrapper}>
-                <div>
-                    <button
-                        onClick={() =>
-                            setCurrentMonth(currentMonth === 0 ? 11 : currentMonth - 1)
-                        }
-                    >
-                        ← Назад
-                    </button>
-                </div>
-                <div>
-                    <p>{dayjs().month(currentMonth).locale('uk').format('MMMM YYYY').replace(/^./, (match) => match.toUpperCase())}</p>
-                </div>
-                <div>
-                    {currentMonth !== dayjs().month() || currentYear !== dayjs().year() ? (
+                <div className={styles.buttonWrapper}>
+                    <div>
                         <button
                             onClick={() =>
-                                setCurrentMonth(currentMonth === 11 ? 0 : currentMonth + 1)
+                                setCurrentMonth(
+                                    currentMonth === 0 ? 11 : currentMonth - 1
+                                )
                             }
                         >
-                            Вперед →
+                            ← Назад
                         </button>
-                    ) : null}
+                    </div>
+                    <div>
+                        <p>
+                            {dayjs()
+                                .month(currentMonth)
+                                .locale("uk")
+                                .format("MMMM YYYY")
+                                .replace(/^./, (match) => match.toUpperCase())}
+                        </p>
+                    </div>
+                    <div>
+                        {currentMonth !== dayjs().month() ||
+                        currentYear !== dayjs().year() ? (
+                            <button
+                                onClick={() =>
+                                    setCurrentMonth(
+                                        currentMonth === 11
+                                            ? 0
+                                            : currentMonth + 1
+                                    )
+                                }
+                            >
+                                Вперед →
+                            </button>
+                        ) : null}
+                    </div>
+                </div>
+
+                <div>
+                    <h3>
+                        Статистика інтернет продажів за{" "}
+                        {dayjs()
+                            .month(currentMonth)
+                            .locale("uk")
+                            .format("MMMM YYYY")
+                            .replace(/^./, (match) => match.toUpperCase())}
+                    </h3>
+                    <p>Кількість замовлень: {filteredOrders.length}</p>
+                    <p>
+                        Завершені замовлення:{" "}
+                        {
+                            filteredOrders.filter((order) => order.completed)
+                                .length
+                        }
+                    </p>
+                    <p>
+                        Ітогова сума:{" "}
+                        {filteredOrders.reduce(
+                            (total, order) => total + Number(order.amount),
+                            0
+                        )}{" "}
+                        грн
+                    </p>
+                </div>
+
+                <div>
+                    <Bar data={chartData} options={chartOptions} />
                 </div>
             </div>
-
-            <div>
-                <h3>Статистика інтернет продажів за {dayjs().month(currentMonth).locale('uk').format('MMMM YYYY').replace(/^./, (match) => match.toUpperCase())}</h3>
-                <p>Кількість замовлень: {filteredOrders.length}</p>
-                <p>Завершені замовлення: {filteredOrders.filter(order => order.completed).length}</p>
-                <p>Ітогова сума: {filteredOrders.reduce((total, order) => total + Number(order.amount), 0)} грн</p>
-            </div>
-
-            <div>
-                <Bar data={chartData} options={chartOptions} />
-            </div>
-        </div>
         </>
     );
-       
 };
 
 export default StatisticsWithChart;

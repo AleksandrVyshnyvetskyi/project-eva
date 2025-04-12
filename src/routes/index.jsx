@@ -5,7 +5,7 @@ import Repairs from "../pages/Repairs";
 import Analytics from "../pages/Analytics";
 
 const AppRoutes = () => {
-    return(
+    return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/sales" element={<Sales />} />
@@ -13,6 +13,6 @@ const AppRoutes = () => {
             <Route path="/analytics" element={<Analytics />} />
         </Routes>
     );
-}
+};
 
 export default AppRoutes;

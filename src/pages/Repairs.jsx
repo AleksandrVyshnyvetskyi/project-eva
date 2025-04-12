@@ -1,13 +1,13 @@
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import RepairsContainer from "../components/repairs/RepairsContainer";
 
 const Repairs = () => {
     return (
-    <>
-        <RepairsContainer />
-        <ToastContainer/>
-    </>
-    )
+        <>
+            <RepairsContainer />
+            <ToastContainer />
+        </>
+    );
 };
 
 export default Repairs;

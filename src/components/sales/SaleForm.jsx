@@ -1,23 +1,23 @@
 import { useState } from "react";
-import { registerLocale } from 'react-datepicker';
+import { registerLocale } from "react-datepicker";
 import { toast } from "react-toastify";
-import { uk } from 'date-fns/locale';
+import { uk } from "date-fns/locale";
 import dayjs from "dayjs";
-import styles from '../../styles/Sales.module.css'
+import styles from "../../styles/Sales.module.css";
 
-registerLocale('uk', uk);
+registerLocale("uk", uk);
 
-const SaleForm = ({ onAdd }) => {  
+const SaleForm = ({ onAdd }) => {
     const [form, setForm] = useState({
-        orderNumber: '',
-        items: [''],
-        date: dayjs().format('YYYY-MM-DD'),
-        client: '',
-        address: '',
-        payment: '',
-        phone: '',
-        amount: '',
-        ttn: ''
+        orderNumber: "",
+        items: [""],
+        date: dayjs().format("YYYY-MM-DD"),
+        client: "",
+        address: "",
+        payment: "",
+        phone: "",
+        amount: "",
+        ttn: "",
     });
 
     const handleChange = (e, index) => {
@@ -32,32 +32,43 @@ const SaleForm = ({ onAdd }) => {
     };
 
     const handleAddItem = () => {
-        setForm((prev) => ({ ...prev, items: [...prev.items, ''] }));
+        setForm((prev) => ({ ...prev, items: [...prev.items, ""] }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!form.items.some(item => item.trim())|| !form.orderNumber  || !form.items || !form.date || !form.address || !form.payment || !form.phone || !form.client || !form.amount || !form.ttn) {
+        if (
+            !form.items.some((item) => item.trim()) ||
+            !form.orderNumber ||
+            !form.items ||
+            !form.date ||
+            !form.address ||
+            !form.payment ||
+            !form.phone ||
+            !form.client ||
+            !form.amount ||
+            !form.ttn
+        ) {
             toast.error("Будь ласка, заповніть усі обов'язкові поля!");
             return;
         }
 
         onAdd({
             ...form,
-            items: form.items.filter(item => item.trim())
+            items: form.items.filter((item) => item.trim()),
         });
 
         setForm({
-            orderNumber: '',
-            items: [''],
-            date: dayjs().format('YYYY-MM-DD'),
-            client: '',
-            address: '',
-            payment: '',
-            phone: '',
-            amount: '',
-            ttn: ''
+            orderNumber: "",
+            items: [""],
+            date: dayjs().format("YYYY-MM-DD"),
+            client: "",
+            address: "",
+            payment: "",
+            phone: "",
+            amount: "",
+            ttn: "",
         });
     };
 
@@ -69,21 +80,26 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Номер замовлення"
                 value={form.orderNumber}
                 onChange={handleChange}
-                
             />
             <div className={styles.wrapper}>
                 {form.items.map((item, index) => (
-                    <input key={index}
+                    <input
+                        key={index}
                         className={styles.input}
                         name="item"
                         placeholder="Товар на відправку"
                         value={item}
                         onChange={(e) => handleChange(e, index)}
-                        
                     />
                 ))}
-                <button type="button" className={styles.btn} onClick={handleAddItem}>Додати товар</button>
-            </div>     
+                <button
+                    type="button"
+                    className={styles.btn}
+                    onClick={handleAddItem}
+                >
+                    Додати товар
+                </button>
+            </div>
             <input
                 className={styles.input}
                 lang="uk"
@@ -91,7 +107,6 @@ const SaleForm = ({ onAdd }) => {
                 name="date"
                 value={form.date}
                 onChange={handleChange}
-                
             />
 
             <input
@@ -100,7 +115,6 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Ім'я клієнта"
                 value={form.client}
                 onChange={handleChange}
-                
             />
             <input
                 className={styles.input}
@@ -108,7 +122,6 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Номер телефону"
                 value={form.phone}
                 onChange={handleChange}
-                
             />
             <input
                 className={styles.input}
@@ -116,7 +129,6 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Адреса"
                 value={form.address}
                 onChange={handleChange}
-                
             />
             <input
                 className={styles.input}
@@ -125,7 +137,6 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Сума замовлення"
                 value={form.amount}
                 onChange={handleChange}
-                
             />
             <input
                 className={styles.input}
@@ -133,16 +144,16 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="ТТН"
                 value={form.ttn}
                 onChange={handleChange}
-                
             />
             <select
                 className={styles.input}
                 name="payment"
                 value={form.payment}
                 onChange={handleChange}
-                
             >
-                <option value="" disabled>Оберіть спосіб оплати</option>
+                <option value="" disabled>
+                    Оберіть спосіб оплати
+                </option>
                 <option>Післяплата</option>
                 <option>Готівка</option>
                 <option>Карта</option>
@@ -153,7 +164,9 @@ const SaleForm = ({ onAdd }) => {
                 <option>О/Ч Sens</option>
             </select>
 
-            <button type="submit" className={styles.button}>Додати</button>
+            <button type="submit" className={styles.button}>
+                Додати
+            </button>
         </form>
     );
 };
