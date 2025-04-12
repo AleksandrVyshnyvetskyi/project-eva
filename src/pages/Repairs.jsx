@@ -1,5 +1,7 @@
+import RepairsContainer from "../components/repairs/RepairsContainer";
+
 const Repairs = () => {
-    return <h1>Відправлення в сервіс:</h1>
-}
+    return <RepairsContainer />;
+};
 
 export default Repairs;

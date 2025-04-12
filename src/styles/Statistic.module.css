@@ -2,6 +2,12 @@
     padding: 15px;
 }
 
+.title {
+    padding: 30px;
+    border-bottom: 2px solid #212121;
+    font-size: 28px;
+}
+
 .buttonWrapper {
     display: flex;
     width: 100%;

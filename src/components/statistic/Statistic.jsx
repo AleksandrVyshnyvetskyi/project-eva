@@ -99,7 +99,9 @@ const StatisticsWithChart = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <>
+            <h2 className={styles.title}>📊 Статистика:</h2>
+            <div className={styles.container}>
             <div className={styles.buttonWrapper}>
                 <div>
                     <button
@@ -137,7 +139,9 @@ const StatisticsWithChart = () => {
                 <Bar data={chartData} options={chartOptions} />
             </div>
         </div>
+        </>
     );
+       
 };
 
 export default StatisticsWithChart;
