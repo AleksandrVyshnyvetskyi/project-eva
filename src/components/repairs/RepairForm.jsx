@@ -88,7 +88,7 @@ const RepairForm = ({ onAddRepair }) => {
                     <option value="service2">Сервіс 2</option>
                 </select>
 
-                <button type="submit">Додати відправку на ремонт</button>
+                <button className={styles.button} type="submit">Додати відправку</button>
             </form>
             <ToastContainer position="top-right" autoClose={3000} />
         </>

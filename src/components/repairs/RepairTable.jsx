@@ -3,6 +3,7 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import dayjs from "dayjs";
 import styles from '../../styles/Repairs.module.css';
+import stylesTable from '../../styles/Table.module.css';
 import { toast } from "react-toastify";
 
 const RepairOrdersTable = () => {
@@ -64,7 +65,7 @@ const RepairOrdersTable = () => {
                         .sort((a, b) => {
                             const dateA = dayjs(a.dateReceived);
                             const dateB = dayjs(b.dateReceived);
-                            return dateB - dateA; // сортировка по убыванию (новые сверху)
+                            return dateB - dateA; 
                         })
                         .map((order) => {
                             const isDelayed = order.repairStatusDate &&
@@ -90,7 +91,7 @@ const RepairOrdersTable = () => {
                                 <td>{order.store}</td>
                                 <td>{order.service}</td>
                                 <td>
-                                    <input
+                                    <input className={stylesTable.checkbox}
                                         type="checkbox"
                                         checked={order.isReturned}
                                         onChange={() => handleMarkAsReturned(order.id)}

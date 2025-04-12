@@ -3,6 +3,7 @@ import { db } from "../firebase";
 import { collection, addDoc, getDocs, doc, updateDoc, getDoc } from "firebase/firestore";
 import dayjs from "dayjs";
 import 'dayjs/locale/uk';
+import { ToastContainer, toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 import SaleForm from "../components/sales/SaleForm";
 import SalesTable from "../components/sales/SalesTable";
@@ -59,23 +60,33 @@ const Sales = () => {
 
     const handleCheckboxChange = async (id) => {
         if (!id) return;
-    
+
         const newValue = !received[id];
         setReceived((prev) => ({ ...prev, [id]: newValue }));
-    
+
         try {
             const saleRef = doc(db, "sales", id);
-            const saleSnapshot = await getDoc(saleRef); 
-    
+            const saleSnapshot = await getDoc(saleRef);
+
             if (saleSnapshot.exists()) {
+                // Обновление документа в Firebase
                 await updateDoc(saleRef, { received: newValue });
+                
+                // Логирование изменения для отладки
+                console.log(`Обновлён статус заказа с id: ${id}, получено: ${newValue}`);
+
+                // Отправка уведомления
+                toast.success("✅ Видано клієнту!");
             } else {
+                // Если документ не найден, удаляем из состояния received
                 setReceived(prev => {
                     const { [id]: removed, ...rest } = prev; 
                     return rest;
                 });
+                console.error(`Заказ с id: ${id} не найден!`);
             }
         } catch (error) {
+            toast.error("Помилка при оновленні received");
             console.error("Ошибка при обновлении received:", error);
         }
     };
@@ -245,6 +256,7 @@ const Sales = () => {
                     Завантажити Excel
                 </button>
             </div>
+            <ToastContainer />
         </>
     );
 };

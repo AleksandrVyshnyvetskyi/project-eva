@@ -18,6 +18,7 @@ thead {
 thead th {
     font-size: 14px;
     padding: 10px;
+    color: white; 
 }
 
 tbody tr, tbody tr p {
@@ -32,7 +33,20 @@ tr {
 }
 
 tbody tr:nth-child(even) {
-    background-color: #acacac;
+    background-color: #f2f2f2;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tbody tr.delivered {
+    background-color: #e0d9ff;
+}
+
+tbody tr.late {
+    background-color: var(--warning-accent);
+    color: white;
 }
 
 tbody tr td {
@@ -46,7 +60,6 @@ tbody tr td {
     background-color: #8a60d3;
 }
 
-
 .deleteBtn:hover {
     background-color: var(--accent);
 }
@@ -54,29 +67,20 @@ tbody tr td {
 .checkbox {
     width: 18px;
     height: 18px;
-  }
-
-.delivered {
-    background-color: #e0d9ff;
-  }
-  
-.late {
-background-color: var(--warning-accent);
-color: white;
 }
 
 @media (max-width: 768px) {
-table {
-    width: 100%;
-    overflow-x: auto;
-}
+    table {
+        width: 100%;
+        overflow-x: auto;
+    }
   
-tbody tr td {
-    padding: 5px;
-    font-size: 12px;
-}
+    tbody tr td {
+        padding: 5px;
+        font-size: 12px;
+    }
   
-th, td {
-    min-width: 500px;
-}
+    th, td {
+        width: 100%; /* Это поможет сделать ячейки более адаптивными */
+    }
 }

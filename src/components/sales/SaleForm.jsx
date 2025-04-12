@@ -152,7 +152,6 @@ const SaleForm = ({ onAdd }) => {
                     placeholder="ТТН"
                     value={form.ttn}
                     onChange={handleChange}
-                    required
                 />
                 <select
                     className={styles.input}
