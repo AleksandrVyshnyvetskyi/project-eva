@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 
 import styles from '../../styles/Repairs.module.css';
 import inv from '../../styles/Sales.module.css'
@@ -21,7 +23,16 @@ const RepairsContainer = () => {
             }));
             setRepairs(data);
         } catch (error) {
-            console.error("Ошибка загрузки заказов:", error);
+            console.error("Помилка завантаження замовлення:", error);
+            toast.error("Не вдалося завантажити замовлення. Спробуйте ще раз.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 
@@ -38,8 +49,26 @@ const RepairsContainer = () => {
                     o.id === id ? { ...o, isReturned: updatedValue } : o
                 )
             );
+            toast.success(`Статус для замовлення №${id} оновлено!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         } catch (error) {
-            console.error("Ошибка при обновлении статуса:", error);
+            console.error("Помилка оновлення статуса:", error);
+            toast.error("Не вдалося оновити статус. Спробуйте ще раз.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 
@@ -56,11 +85,9 @@ const RepairsContainer = () => {
     };
 
     return (
-        <>
+        <>  
             <h2 className={styles.title}>⚙️ Відправки в сервіс:</h2>
-
-
-                    <button style={{maxWidth:'20vw'}} className={inv.salesBtn} onClick={handleFormToggle}>
+                    <button style={{maxWidth:'20vw', marginBottom: '60px'}} className={inv.salesBtn} onClick={handleFormToggle}>
                         {isFormVisible ? 'Сховати форму ↑' : 'Створити відправку ↓'}
                     </button>
                     <div className={`${inv.formPanel} ${isFormVisible ? inv.visible : ''}`}>

@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import styles from '../../styles/Repairs.module.css';
 import stylesTable from '../../styles/Table.module.css';
-import { toast } from "react-toastify";
 
 const RepairOrdersTable = () => {
     const [repairOrders, setRepairOrders] = useState([]);
-    if (!repairOrders.length) return <p>Поки що немає сервісних відправок...</p>;
+    if (repairOrders.length === null || repairOrders.length === undefined) {
+        return <p>Поки що немає сервісних відправок...</p>;
+    }
     useEffect(() => {
         const fetchRepairOrders = async () => {
             const querySnapshot = await getDocs(collection(db, "repair_orders"));
@@ -76,7 +78,7 @@ const RepairOrdersTable = () => {
 
                         const rowStyle = {
                             backgroundColor: order.isReturned
-                                ? "lightgreen" // светло-зелёный
+                                ? "lightgreen"
                                 : isDelayed
                                 ? "coral"
                                 : "transparent",

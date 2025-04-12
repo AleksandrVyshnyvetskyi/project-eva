@@ -1,6 +1,6 @@
 import { useState } from "react";
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import { toast } from "react-toastify";
 import { uk } from 'date-fns/locale';
 import dayjs from "dayjs";
 import styles from '../../styles/Sales.module.css'
@@ -38,8 +38,8 @@ const SaleForm = ({ onAdd }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!form.items.some(item => item.trim()) || !form.client || !form.amount || !form.ttn) {
-            alert("Будь ласка, заповніть усі обов'язкові поля!");
+        if (!form.items.some(item => item.trim())|| !form.orderNumber  || !form.items || !form.date || !form.address || !form.payment || !form.phone || !form.client || !form.amount || !form.ttn) {
+            toast.error("Будь ласка, заповніть усі обов'язкові поля!");
             return;
         }
 
@@ -69,7 +69,7 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Номер замовлення"
                 value={form.orderNumber}
                 onChange={handleChange}
-                required
+                
             />
             <div className={styles.wrapper}>
                 {form.items.map((item, index) => (
@@ -79,25 +79,11 @@ const SaleForm = ({ onAdd }) => {
                         placeholder="Товар на відправку"
                         value={item}
                         onChange={(e) => handleChange(e, index)}
-                        required
+                        
                     />
                 ))}
                 <button type="button" className={styles.btn} onClick={handleAddItem}>Додати товар</button>
-            </div>
-
-            {/* <DatePicker
-                selected={new Date(form.date)}
-                onChange={(date) => {
-                    const formattedDate = dayjs(date).format('DD.MM.YYYY');
-                    setForm((prev) => ({ ...prev, date: formattedDate }));
-                }}
-                locale="uk"
-                dateFormat="DD.MM.YYYY"
-                className={styles.input}
-                value={form.date}
-                required
-            /> */}
-            
+            </div>     
             <input
                 className={styles.input}
                 lang="uk"
@@ -105,7 +91,7 @@ const SaleForm = ({ onAdd }) => {
                 name="date"
                 value={form.date}
                 onChange={handleChange}
-                required
+                
             />
 
             <input
@@ -114,7 +100,7 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Ім'я клієнта"
                 value={form.client}
                 onChange={handleChange}
-                required
+                
             />
             <input
                 className={styles.input}
@@ -122,7 +108,7 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Номер телефону"
                 value={form.phone}
                 onChange={handleChange}
-                required
+                
             />
             <input
                 className={styles.input}
@@ -130,7 +116,7 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Адреса"
                 value={form.address}
                 onChange={handleChange}
-                required
+                
             />
             <input
                 className={styles.input}
@@ -139,7 +125,7 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="Сума замовлення"
                 value={form.amount}
                 onChange={handleChange}
-                required
+                
             />
             <input
                 className={styles.input}
@@ -147,14 +133,14 @@ const SaleForm = ({ onAdd }) => {
                 placeholder="ТТН"
                 value={form.ttn}
                 onChange={handleChange}
-                required
+                
             />
             <select
                 className={styles.input}
                 name="payment"
                 value={form.payment}
                 onChange={handleChange}
-                required
+                
             >
                 <option value="" disabled>Оберіть спосіб оплати</option>
                 <option>Післяплата</option>

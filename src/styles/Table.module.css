@@ -8,6 +8,7 @@ table {
     margin: 0 auto;
     position: relative;
     margin-bottom: 40px;
+    transition: all 0.3s ease;
 }
 
 thead {
@@ -18,7 +19,8 @@ thead {
 thead th {
     font-size: 14px;
     padding: 10px;
-    color: white; 
+    color: white;
+    transition: all 0.3s ease;
 }
 
 tbody tr, tbody tr p {
@@ -26,10 +28,17 @@ tbody tr, tbody tr p {
     color: #505050;
     line-height: 1.2;
     font-weight: unset;
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
 }
 
 tr {
     height: 50px;
+    transition: height 0.2s ease; 
+    transition: width 0.2s ease;
 }
 
 tbody tr:nth-child(even) {
@@ -40,47 +49,67 @@ tbody tr:nth-child(odd) {
     background-color: #ffffff;
 }
 
-tbody tr.delivered {
-    background-color: #e0d9ff;
-}
-
-tbody tr.late {
-    background-color: var(--warning-accent);
-    color: white;
-}
-
 tbody tr td {
     padding: 10px;
     text-align: center;
     font-family: Montserrat, sans-serif;
     font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.deleteBtn {
-    background-color: #8a60d3;
-}
-
-.deleteBtn:hover {
-    background-color: var(--accent);
+.editInput {
+    box-sizing: border-box;
+    padding: 4px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--bg);
+    font-family: inherit;
+    transition: all 0.2s ease;
 }
 
 .checkbox {
     width: 18px;
     height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.checkbox:checked {
+    transform: scale(1.2);
 }
 
 @media (max-width: 768px) {
     table {
         width: 100%;
+        display: block;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        transition: transform 0.3s ease;
     }
-  
-    tbody tr td {
-        padding: 5px;
-        font-size: 12px;
+
+    thead {
+        display: block;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        transition: top 0.3s ease;
     }
-  
-    th, td {
-        width: 100%; /* Это поможет сделать ячейки более адаптивными */
+
+    tbody {
+        display: block;
+        overflow-y: auto;
+        max-height: 400px;
+        transition: max-height 0.3s ease;
+    }
+
+    tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    td, th {
+        width: 120px;
+        transition: width 0.3s ease;
     }
 }
