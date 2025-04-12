@@ -1,5 +1,7 @@
+import StatisticsWithChart from "../components/statistic/Statistic"
+
 const Analytics = () => {
-    return <h1>Аналітика:</h1>
+    return <StatisticsWithChart/>
 }
 
 export default Analytics
