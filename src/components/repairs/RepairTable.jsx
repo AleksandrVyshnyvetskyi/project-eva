@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 const RepairOrdersTable = () => {
     const [repairOrders, setRepairOrders] = useState([]);
-
+    if (!repairOrders.length) return <p>Поки що немає сервісних відправок...</p>;
     useEffect(() => {
         const fetchRepairOrders = async () => {
             const querySnapshot = await getDocs(collection(db, "repair_orders"));

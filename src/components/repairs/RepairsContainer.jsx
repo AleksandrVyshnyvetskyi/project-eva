@@ -4,11 +4,13 @@ import { db } from "../../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 import styles from '../../styles/Repairs.module.css';
+import inv from '../../styles/Sales.module.css'
 import RepairForm from './RepairForm';
 import RepairTable from './RepairTable';
 
 const RepairsContainer = () => {
     const [repairs, setRepairs] = useState([]);
+    const [isFormVisible, setIsFormVisible] = useState(false);
 
     const fetchRepairs = async () => {
         try {
@@ -49,10 +51,22 @@ const RepairsContainer = () => {
         setRepairs(prev => [...prev, newRepair]);
     };
 
+    const handleFormToggle = () => {
+        setIsFormVisible(prev => !prev);
+    };
+
     return (
         <>
             <h2 className={styles.title}>⚙️ Відправки в сервіс:</h2>
-            <RepairForm onAddRepair={handleAddRepair} />
+
+
+                    <button style={{maxWidth:'20vw'}} className={inv.salesBtn} onClick={handleFormToggle}>
+                        {isFormVisible ? 'Сховати форму ↑' : 'Створити відправку ↓'}
+                    </button>
+                    <div className={`${inv.formPanel} ${isFormVisible ? inv.visible : ''}`}>
+                        <RepairForm onAddRepair={handleAddRepair} />
+                    </div>
+
             <RepairTable repairs={repairs} onMarkAsReturned={handleMarkAsReturned} />
         </>
     );
