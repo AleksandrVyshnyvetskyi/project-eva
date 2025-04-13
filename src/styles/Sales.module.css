@@ -246,6 +246,10 @@
     .wrapper{
       width: 100%;
     }
+
+    .left, .right {
+      width: 70vw;
+    }
   
     .createBtn, .searchBtn {
       width: 100%;
@@ -277,6 +281,10 @@
   @media (max-width: 480px) {
     .container {
       gap: 20px;
+    }
+
+    .left, .right {
+      width: 50vw;
     }
   
     .input {

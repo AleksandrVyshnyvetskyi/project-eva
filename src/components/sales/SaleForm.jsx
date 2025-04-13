@@ -158,6 +158,7 @@ const SaleForm = ({ onAdd }) => {
                 <option>Готівка</option>
                 <option>Карта</option>
                 <option>Р/Р</option>
+                <option>Плати пiзнiше</option>
                 <option>О/Ч Приват Банк</option>
                 <option>О/Ч Моно</option>
                 <option>О/Ч ПУМБ</option>
