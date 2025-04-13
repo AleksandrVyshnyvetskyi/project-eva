@@ -59,10 +59,9 @@
 
   .field:focus-within {
     border: 1px solid var(--accent);
+    color: #d3d3d3;
   }
 
-
-  
   .form .btn {
     display: flex;
     justify-content: space-between;

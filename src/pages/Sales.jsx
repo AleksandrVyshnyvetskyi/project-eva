@@ -94,18 +94,12 @@ const Sales = () => {
             const saleSnapshot = await getDoc(saleRef);
 
             if (saleSnapshot.exists()) {
-                // Обновление документа в Firebase
                 await updateDoc(saleRef, { received: newValue });
-
-                // Логирование изменения для отладки
                 console.log(
                     `Обновлён статус заказа с id: ${id}, получено: ${newValue}`
                 );
-
-                // Отправка уведомления
                 toast.success("✅ Видано клієнту!");
             } else {
-                // Если документ не найден, удаляем из состояния received
                 setReceived((prev) => {
                     const { [id]: removed, ...rest } = prev;
                     return rest;

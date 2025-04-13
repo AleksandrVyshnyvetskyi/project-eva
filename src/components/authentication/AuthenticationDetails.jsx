@@ -1,6 +1,6 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 добавляем навигатор
+import { useNavigate } from "react-router-dom"; 
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,7 +8,7 @@ import styles from '../../styles/Header.module.css';
 
 const AuthenticationDetails = () => {
   const [authUser, setAuthUser] = useState(null);
-  const navigate = useNavigate(); // 👈 инициализируем
+  const navigate = useNavigate();
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -27,7 +27,7 @@ const AuthenticationDetails = () => {
     signOut(auth)
       .then(() => {
         toast.success(`👋 Ви успішно вийшли!`);
-        navigate("/"); // 👈 отправляем на главную
+        navigate("/");
       })
       .catch((error) => {
         toast.error(`❌ Помилка - ${error.message}`);

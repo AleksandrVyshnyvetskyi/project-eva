@@ -43,7 +43,7 @@ const StatisticsWithChart = () => {
           } catch (error) {
             console.error("Помилка при завантаженні статистики:", error);
           } finally {
-            setIsLoading(false); // ⬅️ Снимаем флаг загрузки
+            setIsLoading(false);
           }
         };
         fetchOrders();
@@ -51,7 +51,7 @@ const StatisticsWithChart = () => {
 
       
     if (isLoading) {
-        return <Loader />; // ⬅️ Показываем лоадер
+        return <Loader />;
     }
 
     const filterOrdersByMonth = (month, year) => {

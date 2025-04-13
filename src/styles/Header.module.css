@@ -6,6 +6,10 @@
     margin-bottom: 20px;
 }
 
+.homeContainer {
+    min-height: 50vh;
+}
+
 nav {
     display: flex;
     align-items: center;

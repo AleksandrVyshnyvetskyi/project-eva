@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { AuthProvider } from "./contex/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import AppRoutes from './routes';
 import style from './styles/Header.module.css';
 import AuthenticationDetails from './components/authentication/AuthenticationDetails';
-import { useAuth } from "./contex/AuthContext";
+import { useAuth } from "./context/AuthContext";
 import Footer from './components/Footer/Footer';
 import stylesFooter from './styles/Footer.module.css'
 
@@ -32,7 +32,7 @@ function AppContent() {
 
       </section>
 
-      <section>
+      <section className={style.homeContainer}>
         <AppRoutes />
       </section>
       <section className={stylesFooter.section}>

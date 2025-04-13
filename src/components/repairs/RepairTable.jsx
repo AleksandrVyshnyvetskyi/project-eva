@@ -9,7 +9,7 @@ import Loader from "../loader/Loader";
 
 const RepairOrdersTable = () => {
   const [repairOrders, setRepairOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // состояние загрузки
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRepairOrders = async () => {
@@ -24,7 +24,7 @@ const RepairOrdersTable = () => {
         toast.error("Помилка при завантаженні даних");
         console.error(error);
       } finally {
-        setIsLoading(false); // завершение загрузки
+        setIsLoading(false);
       }
     };
 
@@ -55,7 +55,6 @@ const RepairOrdersTable = () => {
     }
   };
 
-  // 👇 Показываем лоадер при загрузке
   if (isLoading) {
     return <Loader />;
   }

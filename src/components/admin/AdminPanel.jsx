@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getFirestore, collection, getDocs, doc, updateDoc } from "firebase/firestore";
-import { useAuth } from "../../contex/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import styles from "../../styles/Sales.module.css";
 
 const AdminPanel = () => {

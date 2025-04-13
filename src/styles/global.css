@@ -16,6 +16,12 @@ body {
   padding-bottom: 20px;
 }
 
+#root {
+  min-height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+
 h1,
 h2,
 h3,
