@@ -1,7 +1,7 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import { auth } from "../../firebase";
+import { auth } from "../../firebase/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from '../../styles/Header.module.css';
@@ -25,7 +25,9 @@ const AuthenticationDetails = () => {
 
   const userOut = () => {
     signOut(auth)
-      .then(() => {
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        const profileData = await getUserData(user.uid);
         toast.success(`👋 Ви успішно вийшли!`);
         navigate("/");
       })

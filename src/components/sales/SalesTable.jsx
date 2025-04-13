@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import { updateDoc, doc } from "firebase/firestore";
 import styles from "../../styles/Table.module.css";
 import { toast } from "react-toastify";

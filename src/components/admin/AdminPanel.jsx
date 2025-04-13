@@ -27,7 +27,6 @@ const AdminPanel = () => {
     const userRef = doc(db, "users", uid);
     await updateDoc(userRef, { role: newRole });
 
-    // Обновим в UI
     setUsers(prev =>
       prev.map(user =>
         user.id === uid ? { ...user, role: newRole } : user

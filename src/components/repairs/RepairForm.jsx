@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 import dayjs from "dayjs";
 import styles from "../../styles/Repairs.module.css";
 import { ToastContainer, toast } from "react-toastify";

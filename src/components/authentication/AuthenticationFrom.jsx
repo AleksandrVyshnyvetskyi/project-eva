@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+// import { onAuthStateChanged } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { auth } from '../../firebase'
+import { auth } from '../../firebase/firebase'
+import { getUserData } from '../../firebase/userService';
 import styles from '../../styles/Authentication.module.css'
 import Loader from '../loader/Loader'
 
@@ -11,6 +15,8 @@ const AuthenticationForm = () => {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+   
 
     const login = (e) => {
         e.preventDefault();
@@ -21,42 +27,57 @@ const AuthenticationForm = () => {
 
         setIsLoading(true);
 
-        signInWithEmailAndPassword(auth, email, password).then((user) => {
-            if (user.user.email === 'vishniveckijj1994@gmail.com'){
-                toast.success(`👋 Привіт, Олександр !`);
+        signInWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                const profileData = await getUserData(user.uid);
+
+                toast.success(`👋 Привіт, ${profileData?.name || "користувач"}!`);
+                setEmail('');
+                setPassword('');
+                setIsLoggedIn(true);
+            })
+            .catch((error) => {
+                console.log(error);
+                toast.error(`❌ Помилка - ${error}`);
+            })
+            .finally(() => setIsLoading(false));
+        }
+
+
+        const register = async (e) => {
+            e.preventDefault();
+            if (!email || !password) {
+              toast.error("⚠️ Введіть email і пароль");
+              return;
             }
-            setEmail('');
-            setPassword('');
-            setIsLoggedIn(true);
-        }).catch((error) => {
-            console.log(error);
-            toast.error(`❌ Помилка - ${error}`);
-        }).finally(() => setIsLoading(false));
-    }
-
-
-    const register = (e) => {
-        e.preventDefault();
-        if (!email || !password) {
-            toast.error("⚠️ Введіть email і пароль");
-            return;
-          }
-
-        setIsLoading(true);
-
-        createUserWithEmailAndPassword(auth, email, password).then((user) => {
-            toast.success("✅ Вас зареєстровано !");
-            setEmail('');
-            setPassword('');
-            setIsLoggedIn(true);
-        }).catch((error) => {
-            if (error.code === "auth/email-already-in-use") {
+          
+            setIsLoading(true);
+          
+            try {
+              const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+          
+              await setDoc(doc(db, "users", user.uid), {
+                name: "Новий користувач",
+                email: email,
+                role: "viewer"
+              });
+          
+              toast.success("✅ Вас зареєстровано !");
+              setEmail('');
+              setPassword('');
+              setIsLoggedIn(true);
+            } catch (error) {
+              if (error.code === "auth/email-already-in-use") {
                 toast.error("❌ Ви вже зареєстровані");
               } else {
                 toast.error(`❌ Помилка - ${error.message}`);
               }
-        }).finally(() => setIsLoading(false));
-    }
+            } finally {
+              setIsLoading(false);
+            }
+          };
 
     if (isLoading) return <Loader />;
 

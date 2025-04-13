@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../firebase/firebase";
 import { ToastContainer } from "react-toastify";
 import Authentication from "../components/authentication/Authentication";
 import style from "../styles/Home.module.css";

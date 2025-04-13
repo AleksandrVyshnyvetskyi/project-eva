@@ -6,6 +6,7 @@ import AuthenticationDetails from './components/authentication/AuthenticationDet
 import { useAuth } from "./context/AuthContext";
 import Footer from './components/Footer/Footer';
 import stylesFooter from './styles/Footer.module.css'
+import UserPage from './components/user/User';
 
 function AppContent() {
   const { role } = useAuth();
@@ -25,7 +26,7 @@ function AppContent() {
             <Link className={style.link} to="/sales">Продажі</Link>
             <Link className={style.link} to="/repairs">Сервіс</Link>
             <Link className={style.link} to="/analytics">Статистика</Link>
-            <Link className={style.link} to="admin/users">Панель адміністратора</Link>
+            <Link className={style.link} to="/creater">Панель адміністратора</Link>
             </> )}
             <AuthenticationDetails />
           </nav>
