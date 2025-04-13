@@ -9,12 +9,12 @@
     background-color: #171717;
     border: 1px solid black;
     border-radius: 6px;
-    transition: .4s ease-in-out;
+    transition: .3s ease-in-out;
   }
   
   .form:hover {
     transform: scale(1.05);
-    border: 1px solid white;
+    border: 1px solid var(--accent);
   }
   
   .heading {
@@ -37,7 +37,7 @@
     gap: 0.5em;
     border-radius: 6px;
     padding: 0.6em;
-    border: none;
+    border: 1px solid transparent;
     outline: none;
     color: white;
     background-color: #171717;
@@ -52,11 +52,16 @@
   
   .inputField {
     background: none;
-    border: none;
     outline: none;
     width: 100%;
     color: #d3d3d3;
   }
+
+  .field:focus-within {
+    border: 1px solid var(--accent);
+  }
+
+
   
   .form .btn {
     display: flex;
@@ -66,49 +71,31 @@
   }
   
   .button1 {
-    width: 50%;
-    padding: 0.5em;
-    padding-left: 1.1em;
-    padding-right: 1.1em;
+    width: 48%;
+    padding: 5px;
     border-radius: 6px;
-    margin-right: 0.5em;
-    border: none;
+    border: 1px solid transparent;
     outline: none;
-    transition: .4s ease-in-out;
+    transition: .3s ease-in-out;
     background-color: #252525;
     color: white;
+    margin-bottom: 3em;
   }
   
   .button1:hover {
-    background-color: black;
+    background-color: var(--bg);
     color: white;
+    border: 1px solid var(--accent);
   }
   
-  .button2 {
-    width: 50%;
-    padding: 0.5em;
-    padding-left: 2.3em;
-    padding-right: 2.3em;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    transition: .4s ease-in-out;
-    background-color: #252525;
-    color: white;
-  }
-  
-  .button2:hover {
-    background-color: black;
-    color: white;
-  }
   
   .button3 {
     margin-bottom: 3em;
-    padding: 0.5em;
+    padding: 5px;
     border-radius: 6px;
     border: none;
     outline: none;
-    transition: .4s ease-in-out;
+    transition: .3s ease-in-out;
     background-color: #252525;
     color: white;
   }

@@ -3,6 +3,8 @@
     background-color: var(--bg);
     padding: 1rem 2rem;
     border-radius: 1.25rem;
+    display: flex;
+    justify-content: center;
   }
   
   .loader {
@@ -12,7 +14,6 @@
     font-size: 25px;
     display: flex;
     align-items: center;
-    gap: 8px; /* расстояние между "Завантаження" и словами */
     height: 40px;
   }
   
