@@ -13,6 +13,7 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
+import Loader from "../loader/Loader";
 import styles from "../../styles/Statistic.module.css";
 
 ChartJS.register(
@@ -25,21 +26,33 @@ ChartJS.register(
 );
 
 const StatisticsWithChart = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const [currentMonth, setCurrentMonth] = useState(dayjs().month());
     const [currentYear, setCurrentYear] = useState(dayjs().year());
 
     useEffect(() => {
         const fetchOrders = async () => {
+          try {
             const querySnapshot = await getDocs(collection(db, "sales"));
             const ordersData = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
+              id: doc.id,
+              ...doc.data(),
             }));
             setOrders(ordersData);
+          } catch (error) {
+            console.error("Помилка при завантаженні статистики:", error);
+          } finally {
+            setIsLoading(false); // ⬅️ Снимаем флаг загрузки
+          }
         };
         fetchOrders();
-    }, []);
+      }, []);
+
+      
+    if (isLoading) {
+        return <Loader />; // ⬅️ Показываем лоадер
+    }
 
     const filterOrdersByMonth = (month, year) => {
         return orders.filter((order) => {
@@ -104,15 +117,11 @@ const StatisticsWithChart = () => {
             tooltip: {
                 callbacks: {
                     label: (tooltipItem) => {
-                        const formattedDate = dayjs()
-                            .month(currentMonth)
-                            .date(tooltipItem.label)
-                            .format("DD.MM.YYYY");
                         const label =
                             tooltipItem.datasetIndex === 0
                                 ? "Кількість замовлень"
                                 : "Отримані замовлення";
-                        return `${label}: ${tooltipItem.raw}\nДень: ${formattedDate}`;
+                        return `${label}: ${tooltipItem.raw}`;
                     },
                 },
             },

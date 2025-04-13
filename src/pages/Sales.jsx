@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import * as XLSX from "xlsx";
 import SaleForm from "../components/sales/SaleForm";
 import SalesTable from "../components/sales/SalesTable";
+import Loader from "../components/loader/Loader";
 import styles from "../styles/Sales.module.css";
 
 const Sales = () => {
@@ -26,29 +27,41 @@ const Sales = () => {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(dayjs().month());
     const [currentYear, setCurrentYear] = useState(dayjs().year());
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchSales = async () => {
-            const querySnapshot = await getDocs(collection(db, "sales"));
-            const salesData = querySnapshot.docs
-                .filter((doc) => doc.exists())
-                .map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+            try {
+                const querySnapshot = await getDocs(collection(db, "sales"));
+                const salesData = querySnapshot.docs
+                    .filter((doc) => doc.exists())
+                    .map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }));
 
-            const salesReceived = salesData.reduce((acc, sale) => {
-                acc[sale.id] = sale.received || false;
-                return acc;
-            }, {});
+                const salesReceived = salesData.reduce((acc, sale) => {
+                    acc[sale.id] = sale.received || false;
+                    return acc;
+                }, {});
 
-            setSale(salesData);
-            setReceived(salesReceived);
+                setSale(salesData);
+                setReceived(salesReceived);
+            } catch (error) {
+                toast.error("Помилка при завантаженні даних продажу");
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
         };
 
         fetchSales();
     }, []);
 
+    if (isLoading) {
+        return <Loader />;
+    }
+    
     const handleFormToggle = () => {
         setIsFormVisible((prev) => !prev);
     };
