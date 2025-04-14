@@ -140,6 +140,7 @@ const Sales = () => {
                     normalizedSearchQuery
                 ) ||
                 dayjs(sale.date).format("DD.MM.YYYY").includes(searchQuery) ||
+                normalizeString(sale.address).includes(normalizedSearchQuery) ||
                 normalizeString(sale.client).includes(normalizedSearchQuery) ||
                 sale.items.some((item) =>
                     normalizeString(item).includes(normalizedSearchQuery)
