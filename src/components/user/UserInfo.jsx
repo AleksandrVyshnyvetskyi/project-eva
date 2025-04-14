@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { getUserData } from "../../firebase/userService";
+import Loader from "../loader/Loader";
 
-function UserPage() {
+function UserInfo() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
 
@@ -23,11 +24,11 @@ function UserPage() {
 
   return (
     <div>
-      <h2>Привет, {profile.name}</h2>
+      <h2>Привіт, {profile.name}</h2>
       <p>Email: {user.email}</p>
       <p>Роль: {profile.role}</p>
     </div>
   );
 }
 
-export default UserPage;
+export default UserInfo;

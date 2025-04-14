@@ -9,6 +9,7 @@ import styles from "../../styles/Repairs.module.css";
 import inv from "../../styles/Sales.module.css";
 import RepairForm from "./RepairForm";
 import RepairTable from "./RepairTable";
+import RepairInfo from "./RepairInfo";
 
 const RepairsContainer = () => {
     const [repairs, setRepairs] = useState([]);
@@ -99,12 +100,23 @@ const RepairsContainer = () => {
             >
                 {isFormVisible ? "Сховати форму ↑" : "Створити відправку ↓"}
             </button>
+            {/* <button
+                style={{ maxWidth: "20vw", marginBottom: "60px" }}
+                className={inv.salesBtn}
+                onClick={handleFormToggle}
+            >
+                {isFormVisible ? "Сховати інформація ↑" : "Інформація про сервіси ↓"}
+            </button> */}
             <div
                 className={`${inv.formPanel} ${
                     isFormVisible ? inv.visible : ""
                 }`}
             >
                 <RepairForm onAddRepair={handleAddRepair} />
+            </div>
+
+            <div>
+                <RepairInfo/>
             </div>
 
             <RepairTable

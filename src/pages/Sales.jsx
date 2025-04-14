@@ -75,7 +75,8 @@ const Sales = () => {
             ]);
             setReceived((prev) => ({ ...prev, [docRef.id]: false }));
         } catch (e) {
-            console.error("Ошибка при добавлении документа: ", e);
+            console.error("Помилка при додаванні документа: ", e);
+            toast.error("Помилка при додаванні документа");
         }
     };
 
@@ -108,7 +109,7 @@ const Sales = () => {
             }
         } catch (error) {
             toast.error("Помилка при оновленні received");
-            console.error("Ошибка при обновлении received:", error);
+            console.error("Помилка при оновленні received:", error);
         }
     };
 
@@ -158,9 +159,13 @@ const Sales = () => {
             return searchMatch;
         })
         .sort((a, b) => {
-            const dateA = dayjs(a.date);
-            const dateB = dayjs(b.date);
-            return dateB.isBefore(dateA) ? 1 : -1;
+            const dateA = dayjs(a.date).format("YYYY-MM-DD");
+            const dateB = dayjs(b.date).format("YYYY-MM-DD");
+        
+            if (dateA < dateB) return -1;
+            if (dateA > dateB) return 1;
+        
+            return Number(a.orderNumber) - Number(b.orderNumber);
         });
 
     const downloadExcel = () => {

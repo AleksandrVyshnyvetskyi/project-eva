@@ -126,7 +126,7 @@ const RepairForm = ({ onAddRepair }) => {
                 </select>
 
                 <select
-                    name="service"
+                    name="serviceInfo"
                     className={styles.input}
                     value={formData.service}
                     onChange={handleChange}
@@ -135,8 +135,14 @@ const RepairForm = ({ onAddRepair }) => {
                     <option value="" disabled>
                         Оберіть Сервіс
                     </option>
-                    <option value="service1">Сервіс 1</option>
-                    <option value="service2">Сервіс 2</option>
+                    <option value="ТОВ Дейна">ТОВ Дейна (Sigma)</option>
+                    <option value="ТОВ MTI Сервіс">ТОВ MTI Сервіс (Motorola)</option>
+                    <option value="Майстерня №1">Майстерня №1 (Nomi/Realme/Xiaomi)</option>
+                    <option value="Elffix">Elffix (Oscal)</option>
+                    <option value="FyooCha">FyooCha (Samsung)</option>
+                    <option value="СВП Плюс">СВП Плюс (Nokia)</option>
+                    <option value="Цитрус Сервіс/ТОВ'Рітейл Компані'">Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)</option>
+                    <option value="Юг">Юг (Ergo)</option>
                 </select>
 
                 <button className={styles.button} type="submit">

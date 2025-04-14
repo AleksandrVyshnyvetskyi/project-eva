@@ -25,11 +25,9 @@ const AuthenticationDetails = () => {
 
   const userOut = () => {
     signOut(auth)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        const profileData = await getUserData(user.uid);
-        toast.success(`👋 Ви успішно вийшли!`);
+      .then(() => {
         navigate("/");
+        toast.success(`👋 Ви успішно вийшли!`);
       })
       .catch((error) => {
         toast.error(`❌ Помилка - ${error.message}`);
