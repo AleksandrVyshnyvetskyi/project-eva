@@ -182,18 +182,17 @@ const StatisticsWithChart = () => {
                     </h3>
                     <p>Кількість замовлень: {filteredOrders.length}</p>
                     <p>
-                        Завершені замовлення:{" "}
+                        Завершені замовлення:{" "} 
                         {
-                            filteredOrders.filter((order) => order.completed)
+                            filteredOrders.filter((order) => order.received)
                                 .length
                         }
                     </p>
                     <p>
-                        Ітогова сума:{" "}
-                        {filteredOrders.reduce(
-                            (total, order) => total + Number(order.amount),
-                            0
-                        )}{" "}
+                        Ітогова сума завершених замовлень:{" "}
+                        {filteredOrders
+                            .filter((order) => order.received)
+                            .reduce((total, order) => total + Number(order.amount), 0)}{" "}
                         грн
                     </p>
                 </div>
