@@ -14,6 +14,7 @@ import {
     Legend,
 } from "chart.js";
 import Loader from "../loader/Loader";
+import Button from "../common/Button";
 import styles from "../../styles/Statistic.module.css";
 
 ChartJS.register(
@@ -134,15 +135,11 @@ const StatisticsWithChart = () => {
             <div className={styles.container}>
                 <div className={styles.buttonWrapper}>
                     <div>
-                        <button
-                            onClick={() =>
+                        <Button variant="button" onClick={() =>
                                 setCurrentMonth(
                                     currentMonth === 0 ? 11 : currentMonth - 1
                                 )
-                            }
-                        >
-                            ← Назад
-                        </button>
+                            }>← Назад</Button>
                     </div>
                     <div>
                         <p>
@@ -156,18 +153,15 @@ const StatisticsWithChart = () => {
                     <div>
                         {currentMonth !== dayjs().month() ||
                         currentYear !== dayjs().year() ? (
-                            <button
-                                onClick={() =>
-                                    setCurrentMonth(
-                                        currentMonth === 11
-                                            ? 0
-                                            : currentMonth + 1
-                                    )
-                                }
-                            >
-                                Вперед →
-                            </button>
+                            <Button variant="button" onClick={() =>
+                                setCurrentMonth(
+                                    currentMonth === 11
+                                        ? 0
+                                        : currentMonth + 1
+                                )
+                            }>Вперед →</Button>
                         ) : null}
+
                     </div>
                 </div>
 

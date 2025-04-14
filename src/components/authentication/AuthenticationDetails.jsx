@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styles from '../../styles/Header.module.css';
+import Button from "../common/Button";
 
 const AuthenticationDetails = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -37,9 +37,7 @@ const AuthenticationDetails = () => {
   return (
     <div>
       {authUser ? (
-        <button className={styles.outBtn} onClick={userOut}>
-          Вийти
-        </button>
+        <Button variant="outBtn" onClick={userOut}>Вийти</Button>
       ) : (
         ""
       )}

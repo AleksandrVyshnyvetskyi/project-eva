@@ -15,6 +15,7 @@ import * as XLSX from "xlsx";
 import SaleForm from "../components/sales/SaleForm";
 import SalesTable from "../components/sales/SalesTable";
 import Loader from "../components/loader/Loader";
+import Button from "../components/common/Button";
 import styles from "../styles/Sales.module.css";
 
 const Sales = () => {
@@ -239,14 +240,9 @@ const Sales = () => {
             <h2 className={styles.title}>📦 Продажі:</h2>
             <div className={styles.container}>
                 <div className={styles.left}>
-                    <button
-                        className={styles.salesBtn}
-                        onClick={handleFormToggle}
-                    >
-                        {isFormVisible
+                    <Button variant="button" onClick={handleFormToggle}>{isFormVisible
                             ? "Сховати форму ↑"
-                            : "Створити замовлення ↓"}
-                    </button>
+                            : "Створити замовлення ↓"}</Button>
                     <div
                         className={`${styles.formPanel} ${
                             isFormVisible ? styles.visible : ""
@@ -256,12 +252,7 @@ const Sales = () => {
                     </div>
                 </div>
                 <div className={styles.right}>
-                    <button
-                        className={styles.salesBtn}
-                        onClick={handleButtonClick}
-                    >
-                        {isInputVisible ? "Сховати ↑" : "Пошук ↓"}
-                    </button>
+                    <Button variant="button" onClick={handleButtonClick}>{isInputVisible ? "Сховати ↑" : "Пошук ↓"}</Button>
                     <div
                         className={`${styles.searchPanel} ${
                             isInputVisible ? styles.visible : ""
@@ -301,19 +292,14 @@ const Sales = () => {
 
             <div className={styles.monthNavigation}>
                 <div>
-                    <button
-                        className={styles.salesBtn}
-                        onClick={() => {
+                <Button variant="button" type="submit" onClick={() => {
                             const newDate = dayjs()
                                 .year(currentYear)
                                 .month(currentMonth)
                                 .subtract(1, "month");
                             setCurrentMonth(newDate.month());
                             setCurrentYear(newDate.year());
-                        }}
-                    >
-                        ← Назад
-                    </button>
+                        }}>← Назад</Button>
                 </div>
                 <div>
                     <p>
@@ -327,19 +313,14 @@ const Sales = () => {
                 <div>
                     {(currentMonth !== dayjs().month() ||
                         currentYear !== dayjs().year()) && (
-                        <button
-                            className={styles.salesBtn}
-                            onClick={() => {
+                            <Button variant="button" onClick={() => {
                                 const newDate = dayjs()
                                     .year(currentYear)
                                     .month(currentMonth)
                                     .add(1, "month");
                                 setCurrentMonth(newDate.month());
                                 setCurrentYear(newDate.year());
-                            }}
-                        >
-                            Вперед →{" "}
-                        </button>
+                            }}>Вперед →{" "}</Button>
                     )}
                 </div>
             </div>
@@ -349,9 +330,7 @@ const Sales = () => {
                 handleCheckboxChange={handleCheckboxChange}
             />
             <div className={styles.containerForDownloadBtn}>
-                <button className={styles.button} onClick={downloadExcel}>
-                    Завантажити Excel
-                </button>
+            <Button variant="buttonSubmit" onClick={downloadExcel}>Завантажити Excel</Button>
             </div>
             <ToastContainer />
         </>

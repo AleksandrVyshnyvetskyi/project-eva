@@ -31,19 +31,6 @@
 }
 
 
-.buttonWrapper button {
-    background-color: var(--bg);
-    border-color: var(--accent);
-    margin-bottom: 10px;
-    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.buttonWrapper button:hover {
-    color: var(--bg);
-    background-color: #8a60d3;
-    transform: scale(0.95);
-  }
-
   canvas {
     max-height: 50vh;
   }

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth } from '../../firebase/firebase'
 import { getUserData } from '../../firebase/userService';
+import Button from '../common/Button';
 import styles from '../../styles/Authentication.module.css'
 import Loader from '../loader/Loader'
 
@@ -99,10 +100,10 @@ const AuthenticationForm = () => {
                 <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" className={styles.inputField} type="password"/>
             </div>
             <div className={styles.btn}>
-                <button type="submit" className={styles.button1}>Вхід</button>
-                <button type="button" onClick={register} className={styles.button1}>Реєстрація</button>
+                <Button variant='buttonAuthentication'>Вхід</Button>
+                <Button variant='buttonAuthentication' onClick={register}>Реєстрація</Button>
             </div>
-            {/* <button className={styles.button3}>Забули пароль ?</button> */}
+            {/* <Button variant='buttonForgotPassword'>Забули пароль ?</Button> */}
         </form>
     )
 }

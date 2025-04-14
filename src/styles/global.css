@@ -44,8 +44,7 @@ img {
   height: auto;
 }
 
-input,
-button {
+input{
   border: none;
   background: none;
   outline: none;
@@ -72,34 +71,10 @@ li {
   margin: 0 auto;
 }
 
-.flex {
-  display: flex;
-}
-
-.flex-center {
-  align-items: center;
-  justify-content: center;
-}
-
-.icon {
-  width: 12px;
-  height: 12px;
-}
-
 section {
-  background: var(--second-bg);
+  background: var(--bg);
   border-radius: 6px;
   padding: 30px;
-}
-
-button {
-  background: var(--accent);
-  border-radius: 6px;
-  border: 2px solid transparent;
-  padding: 9px 20px;
-  font-weight: 600;
-  line-height: 20px;
-  cursor: pointer;
 }
 
 h2 {
@@ -118,15 +93,6 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield; 
 }
-
-.preloader {
-  flex-grow: 1;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 
 @media (max-width: 768px) {
   body {
@@ -147,13 +113,6 @@ input[type='number'] {
       padding: 20px;
   }
 
-  button {
-      padding: 8px 16px;
-  }
-
-  .flex {
-      flex-direction: column;
-  }
 }
 
 @media (max-width: 480px) {
@@ -170,13 +129,6 @@ input[type='number'] {
       padding: 15px;
   }
 
-  button {
-      padding: 6px 12px;
-  }
-
-  h2 {
-      font-size: 18px;
-  }
 
   .preloader {
       padding: 16px;

@@ -28,7 +28,7 @@ function AppContent() {
             <Link className={style.link} to="/user">Мій профіль</Link>
             <Link className={style.link} to="/creater">Панель адміністратора</Link>
             </> )}
-            <AuthenticationDetails />
+            <AuthenticationDetails/>
           </nav>
 
       </section>

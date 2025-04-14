@@ -2,9 +2,10 @@ import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import dayjs from "dayjs";
-import styles from "../../styles/Repairs.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Button from "../common/Button";
+import styles from "../../styles/Repairs.module.css";
 
 const RepairForm = ({ onAddRepair }) => {
     const [formData, setFormData] = useState({
@@ -144,10 +145,8 @@ const RepairForm = ({ onAddRepair }) => {
                     <option value="Цитрус Сервіс/ТОВ'Рітейл Компані'">Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)</option>
                     <option value="Юг">Юг (Ergo)</option>
                 </select>
-
-                <button className={styles.button} type="submit">
-                    Додати відправку
-                </button>
+                
+                <Button variant="buttonSubmit" onClick={userOut} type="submit">Додати відправку</Button>
             </form>
             <ToastContainer position="top-right" autoClose={3000} />
         </>

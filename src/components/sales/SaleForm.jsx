@@ -3,6 +3,7 @@ import { registerLocale } from "react-datepicker";
 import { toast } from "react-toastify";
 import { uk } from "date-fns/locale";
 import dayjs from "dayjs";
+import Button from "../common/Button";
 import styles from "../../styles/Sales.module.css";
 
 registerLocale("uk", uk);
@@ -92,13 +93,7 @@ const SaleForm = ({ onAdd }) => {
                         onChange={(e) => handleChange(e, index)}
                     />
                 ))}
-                <button
-                    type="button"
-                    className={styles.btn}
-                    onClick={handleAddItem}
-                >
-                    Додати товар
-                </button>
+                <Button variant="buttonAdd" onClick={handleAddItem} type="submit">Додати товар</Button>
             </div>
             <input
                 className={styles.input}
@@ -165,9 +160,7 @@ const SaleForm = ({ onAdd }) => {
                 <option>О/Ч Sens</option>
             </select>
 
-            <button type="submit" className={styles.button}>
-                Додати
-            </button>
+            <Button variant="buttonSubmit" type="submit">Додати</Button>
         </form>
     );
 };

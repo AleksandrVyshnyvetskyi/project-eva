@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import styles from "../../styles/Repairs.module.css";
-import inv from "../../styles/Sales.module.css";
+import buttons from "../../styles/Buttons.module.css";
 import RepairForm from "./RepairForm";
 import RepairTable from "./RepairTable";
 import RepairInfo from "./RepairInfo";
@@ -95,25 +95,25 @@ const RepairsContainer = () => {
             <h2 className={styles.title}>⚙️ Відправки в сервіс:</h2>
             <button
                 style={{ maxWidth: "20vw", marginBottom: "60px" }}
-                className={inv.salesBtn}
+                className={buttons.button}
                 onClick={handleFormToggle}
             >
                 {isFormVisible ? "Сховати форму ↑" : "Створити відправку ↓"}
             </button>
-            {/* <button
+            <button
                 style={{ maxWidth: "20vw", marginBottom: "60px" }}
-                className={inv.salesBtn}
+                className={buttons.button}
                 onClick={handleFormToggle}
             >
                 {isFormVisible ? "Сховати інформація ↑" : "Інформація про сервіси ↓"}
-            </button> */}
-            <div
+            </button>
+            {/* <div
                 className={`${inv.formPanel} ${
                     isFormVisible ? inv.visible : ""
                 }`}
             >
                 <RepairForm onAddRepair={handleAddRepair} />
-            </div>
+            </div> */}
 
             <div>
                 <RepairInfo/>
