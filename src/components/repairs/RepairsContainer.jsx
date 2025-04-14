@@ -11,6 +11,8 @@ import RepairForm from "./RepairForm";
 import RepairTable from "./RepairTable";
 import RepairInfo from "./RepairInfo";
 
+import inv from '../../styles/Sales.module.css'
+
 const RepairsContainer = () => {
     const [repairs, setRepairs] = useState([]);
     const [isFormVisible, setIsFormVisible] = useState(false);
@@ -107,13 +109,13 @@ const RepairsContainer = () => {
             >
                 {isFormVisible ? "Сховати інформація ↑" : "Інформація про сервіси ↓"}
             </button>
-            {/* <div
+            <div
                 className={`${inv.formPanel} ${
                     isFormVisible ? inv.visible : ""
                 }`}
             >
                 <RepairForm onAddRepair={handleAddRepair} />
-            </div> */}
+            </div>
 
             <div>
                 <RepairInfo/>

@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../common/Button";
+import Field from "../common/Field";
 import styles from "../../styles/Repairs.module.css";
 
 const RepairForm = ({ onAddRepair }) => {
@@ -62,91 +63,86 @@ const RepairForm = ({ onAddRepair }) => {
     return (
         <>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <input
-                    type="date"
-                    name="dateReceived"
-                    className={styles.input}
-                    value={formData.dateReceived}
-                    onChange={handleChange}
-                />
 
-                <select
-                    name="brand"
-                    className={styles.input}
-                    value={formData.brand}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="" disabled>
-                        Бренд
-                    </option>
-                    <option value="Samsung">Samsung</option>
-                    <option value="Xiaomi">Xiaomi</option>
-                    <option value="Oscal">Oscal</option>
-                    <option value="Motorola">Motorola</option>
-                    <option value="Realme">Realme</option>
-                    <option value="Nomi">Nomi</option>
-                    <option value="Sigma">Sigma</option>
-                    <option value="Ergo">Ergo</option>
-                </select>
+            <Field
+                type="date"
+                name="dateReceived"
+                value={formData.dateReceived}
+                onChange={handleChange}
+            />
 
-                <input
-                    name="model"
-                    placeholder="Модель"
-                    className={styles.input}
-                    type="text"
-                    value={formData.model}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    name="imei"
-                    placeholder="IMEI"
-                    className={styles.input}
-                    type="text"
-                    value={formData.imei}
-                    onChange={handleChange}
-                    required
-                />
+            <Field
+                type="select"
+                name="brand"
+                value={formData.brand}
+                onChange={handleChange}
+                required
+                options={[
+                { value: '', label: 'Бренд', disabled: true },
+                { value: 'Samsung', label: 'Samsung' },
+                { value: 'Xiaomi', label: 'Xiaomi' },
+                { value: 'Oscal', label: 'Oscal' },
+                { value: 'Motorola', label: 'Motorola' },
+                { value: 'Realme', label: 'Realme' },
+                { value: 'Nomi', label: 'Nomi' },
+                { value: 'Sigma', label: 'Sigma' },
+                { value: 'Ergo', label: 'Ergo' },
+                ]}
+            />
 
-                <select
-                    name="store"
-                    className={styles.input}
-                    value={formData.store}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="" disabled>
-                        Оберіть Магазин
-                    </option>
-                    {Array.from({ length: 13 }, (_, i) => (
-                        <option key={i + 1} value={`SmS ${i + 1}`}>
-                            SmS {i + 1}
-                        </option>
-                    ))}
-                </select>
+            <Field
+                name="model"
+                placeholder="Модель"
+                type="text"
+                value={formData.model}
+                onChange={handleChange}
+                required
+            />
 
-                <select
-                    name="serviceInfo"
-                    className={styles.input}
-                    value={formData.service}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="" disabled>
-                        Оберіть Сервіс
-                    </option>
-                    <option value="ТОВ Дейна">ТОВ Дейна (Sigma)</option>
-                    <option value="ТОВ MTI Сервіс">ТОВ MTI Сервіс (Motorola)</option>
-                    <option value="Майстерня №1">Майстерня №1 (Nomi/Realme/Xiaomi)</option>
-                    <option value="Elffix">Elffix (Oscal)</option>
-                    <option value="FyooCha">FyooCha (Samsung)</option>
-                    <option value="СВП Плюс">СВП Плюс (Nokia)</option>
-                    <option value="Цитрус Сервіс/ТОВ'Рітейл Компані'">Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)</option>
-                    <option value="Юг">Юг (Ergo)</option>
-                </select>
+            <Field
+                name="imei"
+                placeholder="IMEI"
+                type="text"
+                value={formData.imei}
+                onChange={handleChange}
+                required
+            />
+
+            <Field
+                type="select"
+                name="store"
+                value={formData.store}
+                onChange={handleChange}
+                required
+                options={[
+                { value: '', label: 'Оберіть Магазин', disabled: true },
+                ...Array.from({ length: 13 }, (_, i) => ({
+                    value: `SmS ${i + 1}`,
+                    label: `SmS ${i + 1}`
+                }))
+                ]}
+            />
+
+            <Field
+                type="select"
+                name="serviceInfo"
+                value={formData.service}
+                onChange={handleChange}
+                required
+                options={[
+                { value: '', label: 'Оберіть Сервіс', disabled: true },
+                { value: 'ТОВ Дейна', label: 'ТОВ Дейна (Sigma)' },
+                { value: 'ТОВ MTI Сервіс', label: 'ТОВ MTI Сервіс (Motorola)' },
+                { value: 'Майстерня №1', label: 'Майстерня №1 (Nomi/Realme/Xiaomi)' },
+                { value: 'Elffix', label: 'Elffix (Oscal)' },
+                { value: 'FyooCha', label: 'FyooCha (Samsung)' },
+                { value: 'СВП Плюс', label: 'СВП Плюс (Nokia)' },
+                { value: 'Цитрус Сервіс/ТОВ\'Рітейл Компані\'', label: 'Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)' },
+                { value: 'Юг', label: 'Юг (Ergo)' },
+                ]}
+            />
                 
-                <Button variant="buttonSubmit" onClick={userOut} type="submit">Додати відправку</Button>
+                <Button variant="buttonSubmit" type="submit">Додати відправку</Button>
             </form>
             <ToastContainer position="top-right" autoClose={3000} />
         </>

@@ -138,7 +138,7 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                                     : isOldOrder(sale.date) &&
                                       !received[sale.id]
                                     ? "coral"
-                                    : "transparent",
+                                    : null ,
                             }}
                         >
                             <td

@@ -3,6 +3,7 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import Field from "../common/Field";
 import styles from "../../styles/Repairs.module.css";
 import stylesTable from "../../styles/Table.module.css";
 import Loader from "../loader/Loader";
@@ -97,7 +98,7 @@ const RepairOrdersTable = () => {
                   ? "lightgreen"
                   : isDelayed
                   ? "coral"
-                  : "transparent",
+                  : null,
               };
 
               return (
@@ -109,12 +110,11 @@ const RepairOrdersTable = () => {
                   <td>{order.store}</td>
                   <td>{order.service}</td>
                   <td>
-                    <input
-                      className={stylesTable.checkbox}
-                      type="checkbox"
-                      checked={order.isReturned}
+                    <Field type="checkbox"
+                      name="isReturned"
+                      value={order.isReturned}
                       onChange={() => handleMarkAsReturned(order.id)}
-                    />
+                      label="Повернено?"/>
                   </td>
                 </tr>
               );
