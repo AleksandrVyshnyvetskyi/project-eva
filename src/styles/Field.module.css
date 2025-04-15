@@ -92,6 +92,41 @@
   .checkboxLabel {
     user-select: none;
   }
+
+  .tableSelect, .tableSelect option {
+    width: auto;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  .saleField {
+    width: 20vw;
+  }
+
+  .editInput {
+    /* box-sizing: border-box; */
+    width: 100%;
+    height: auto;
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+  @media (max-width: 1024px) {
+    .saleField {
+      width: 40vw;
+    }
+
+  }
   
   /* Адаптивность */
   @media (max-width: 768px) {

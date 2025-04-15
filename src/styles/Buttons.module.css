@@ -2,6 +2,7 @@
 .buttonBase {
   font-family: Montserrat, Roboto, sans-serif;
   font-weight: 600;
+  width: auto;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   padding: 10px 20px;
@@ -120,6 +121,11 @@
 .outBtn:hover {
   color: var(--accent);
   border-bottom: 1px solid var(--accent);
+}
+
+.width20 {
+  composes: button;
+  width: 20vw;
 }
 
 /* 📱 Адаптивность */

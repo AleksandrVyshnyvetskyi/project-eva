@@ -44,14 +44,14 @@ img {
   height: auto;
 }
 
-input{
+/* input{
   border: none;
   background: none;
   outline: none;
   color: var(--text);
   font-size: 16px;
   font-family: Montserrat, Roboto, sans-serif;
-}
+} */
 
 a {
   color: var(--text);

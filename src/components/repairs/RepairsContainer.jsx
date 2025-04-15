@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import styles from "../../styles/Repairs.module.css";
-import buttons from "../../styles/Buttons.module.css";
+import Button from "../common/Button";
 import RepairForm from "./RepairForm";
 import RepairTable from "./RepairTable";
 import RepairInfo from "./RepairInfo";
@@ -16,6 +16,7 @@ import inv from '../../styles/Sales.module.css'
 const RepairsContainer = () => {
     const [repairs, setRepairs] = useState([]);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [isRepairInfo, setIsRepairInfo] = useState(false);
 
     const fetchRepairs = async () => {
         try {
@@ -92,23 +93,22 @@ const RepairsContainer = () => {
         setIsFormVisible((prev) => !prev);
     };
 
+    const handleInformTableToggle = () => {
+        setIsRepairInfo((prev) => !prev)
+    }
+
     return (
         <>
             <h2 className={styles.title}>⚙️ Відправки в сервіс:</h2>
-            <button
-                style={{ maxWidth: "20vw", marginBottom: "60px" }}
-                className={buttons.button}
-                onClick={handleFormToggle}
-            >
-                {isFormVisible ? "Сховати форму ↑" : "Створити відправку ↓"}
-            </button>
-            <button
-                style={{ maxWidth: "20vw", marginBottom: "60px" }}
-                className={buttons.button}
-                onClick={handleFormToggle}
-            >
-                {isFormVisible ? "Сховати інформація ↑" : "Інформація про сервіси ↓"}
-            </button>
+            <div className={styles.btnWrapper}>
+                <Button variant='width20' onClick={handleFormToggle} type='button'>
+                    {isFormVisible ? "Сховати форму ↑" : "Створити відправку ↓"}
+                </Button>
+                <Button variant='width20' onClick={handleInformTableToggle} type='button'>
+                    {isRepairInfo ? "Сховати інформація ↑" : "Інформація про сервіси ↓"}
+                </Button>
+            </div>
+
             <div
                 className={`${inv.formPanel} ${
                     isFormVisible ? inv.visible : ""
@@ -117,7 +117,11 @@ const RepairsContainer = () => {
                 <RepairForm onAddRepair={handleAddRepair} />
             </div>
 
-            <div>
+            <div
+                className={`${inv.formPanel} ${
+                    isRepairInfo ? inv.visible : ""
+                }`}
+            >
                 <RepairInfo/>
             </div>
 

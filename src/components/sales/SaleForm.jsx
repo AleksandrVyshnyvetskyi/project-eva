@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { uk } from "date-fns/locale";
 import dayjs from "dayjs";
 import Button from "../common/Button";
+import Field from "../common/Field";
 import styles from "../../styles/Sales.module.css";
 
 registerLocale("uk", uk);
@@ -75,8 +76,9 @@ const SaleForm = ({ onAdd }) => {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <input
-                className={styles.input}
+            <Field
+            className="saleField"
+                type="text"
                 name="orderNumber"
                 placeholder="Номер замовлення"
                 value={form.orderNumber}
@@ -84,9 +86,10 @@ const SaleForm = ({ onAdd }) => {
             />
             <div className={styles.wrapper}>
                 {form.items.map((item, index) => (
-                    <input
+                    <Field
+                    className="saleField"
                         key={index}
-                        className={styles.input}
+                        type="text"
                         name="item"
                         placeholder="Товар на відправку"
                         value={item}
@@ -95,71 +98,70 @@ const SaleForm = ({ onAdd }) => {
                 ))}
                 <Button variant="buttonAdd" onClick={handleAddItem} type="submit">Додати товар</Button>
             </div>
-            <input
-                className={styles.input}
+            <Field
+
+                className="saleField"
                 lang="uk"
                 type="date"
                 name="date"
                 value={form.date}
                 onChange={handleChange}
             />
-
-            <input
-                className={styles.input}
+            <Field
+            className="saleField"
                 name="client"
                 placeholder="Ім'я клієнта"
                 value={form.client}
                 onChange={handleChange}
             />
-            <input
-                className={styles.input}
+            <Field
+            className="saleField"
                 name="phone"
                 placeholder="Номер телефону"
                 value={form.phone}
                 onChange={handleChange}
             />
-            <input
-                className={styles.input}
+            <Field
+            className="saleField"
                 name="address"
                 placeholder="Адреса"
                 value={form.address}
                 onChange={handleChange}
             />
-            <input
-                className={styles.input}
+            <Field
+            className="saleField"
                 name="amount"
                 type="number"
                 placeholder="Сума замовлення"
                 value={form.amount}
                 onChange={handleChange}
             />
-            <input
-                className={styles.input}
+            <Field
+            className="saleField"
                 name="ttn"
                 placeholder="ТТН"
                 value={form.ttn}
                 onChange={handleChange}
-            />
-            <select
-                className={styles.input}
+            /> 
+              <Field
+              className="saleField"
+                type="select"
                 name="payment"
                 value={form.payment}
                 onChange={handleChange}
-            >
-                <option value="" disabled>
-                    Оберіть спосіб оплати
-                </option>
-                <option>Післяплата</option>
-                <option>Готівка</option>
-                <option>Карта</option>
-                <option>Р/Р</option>
-                <option>Плати пiзнiше</option>
-                <option>О/Ч Приват Банк</option>
-                <option>О/Ч Моно</option>
-                <option>О/Ч ПУМБ</option>
-                <option>О/Ч Sens</option>
-            </select>
-
+                options={[
+                { value: '', label: 'Спосіб оплати', disabled: true },
+                { value: 'Післяплата', label: 'Післяплата' },
+                { value: 'Готівка', label: 'Готівка' },
+                { value: 'Карта', label: 'Карта' },
+                { value: 'Р/Р', label: 'Р/Р' },
+                { value: 'Плати пiзнiше', label: 'Плати пiзнiше' },
+                { value: 'О/Ч Приват Банк', label: 'О/Ч Приват Банк' },
+                { value: 'О/Ч Моно', label: 'О/Ч Моно' },
+                { value: 'О/Ч ПУМБ', label: 'О/Ч ПУМБ' },
+                { value: 'О/Ч Sens', label: 'О/Ч Sens' },
+                ]}
+            />
             <Button variant="buttonSubmit" type="submit">Додати</Button>
         </form>
     );

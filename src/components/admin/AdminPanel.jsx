@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getFirestore, collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../../context/AuthContext";
+import Field from "../common/Field";
 import styles from "../../styles/Sales.module.css";
 
 const AdminPanel = () => {
@@ -45,6 +46,7 @@ const AdminPanel = () => {
         <thead>
           <tr>
             <th>Email</th>
+            <th>Ім'я</th>
             <th>Роль</th>
             <th>Зміна ролі</th>
           </tr>
@@ -53,16 +55,20 @@ const AdminPanel = () => {
           {users.map(user => (
             <tr key={user.id}>
               <td>{user.email}</td>
+              <td>{user.name}</td>
               <td>{user.role}</td>
               <td>
-                <select
-                  value={user.role}
-                  onChange={e => handleRoleChange(user.id, e.target.value)}
-                >
-                  <option value="admin">admin</option>
-                  <option value="creater">creater</option>
-                  <option value="viewer">viewer</option>
-                </select>
+              <Field
+                type="select"
+                className="tableSelect"
+                value={user.role}
+                onChange={e => handleRoleChange(user.id, e.target.value)}
+                options={[
+                { value: 'creater', label: 'creater' },
+                { value: 'admin', label: 'admin' },
+                { value: 'viewer', label: 'viewer' },
+                ]}
+            />
               </td>
             </tr>
           ))}

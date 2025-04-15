@@ -5,6 +5,7 @@ import { updateDoc, doc } from "firebase/firestore";
 import styles from "../../styles/Table.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Field from "../common/Field";
 
 const SalesTable = ({ data, received, handleCheckboxChange }) => {
     const [editingCell, setEditingCell] = useState(null);
@@ -105,7 +106,7 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                         editingCell?.field === field;
                     const editInput = (field, value, type = "text") =>
                         field === "payment" ? (
-                            <input
+                            <Field
                                 type="text"
                                 value={newValue || value}
                                 onChange={(e) => {
@@ -114,17 +115,17 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                                 }}
                                 onBlur={handleSave}
                                 onKeyDown={handleKeyDown}
-                                className={styles.editInput}
+                                className='editInput'
                                 autoFocus
-                            />
+                        />
                         ) : (
-                            <input
+                            <Field
                                 type={type}
                                 value={newValue || value}
                                 onChange={handleChange}
                                 onBlur={handleSave}
                                 onKeyDown={handleKeyDown}
-                                className={styles.editInput}
+                                className='editInput'
                                 autoFocus
                             />
                         );

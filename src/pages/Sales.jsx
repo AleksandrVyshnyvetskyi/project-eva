@@ -16,6 +16,7 @@ import SaleForm from "../components/sales/SaleForm";
 import SalesTable from "../components/sales/SalesTable";
 import Loader from "../components/loader/Loader";
 import Button from "../components/common/Button";
+import Field from "../components/common/Field";
 import styles from "../styles/Sales.module.css";
 
 const Sales = () => {
@@ -268,24 +269,26 @@ const Sales = () => {
                                     <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z" />
                                 </g>
                             </svg>
-                            <input
-                                className={styles.searchInput}
+                            <Field
                                 type="text"
+                                className='searchInput'
                                 placeholder="Введіть значення"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <select
-                            className={styles.searchSelect}
+                        <Field
+                            type="select"
+                            className='searchInput'
                             onChange={(e) => setFilterStatus(e.target.value)}
                             value={filterStatus}
-                        >
-                            <option value="all">Усі</option>
-                            <option value="completed">Завершені</option>
-                            <option value="notCompleted">Не завершені</option>
-                            <option value="overdue">Просрочені</option>
-                        </select>
+                            options={[
+                            { value: 'all', label: 'Усі' },
+                            { value: 'completed', label: 'Завершені' },
+                            { value: 'notCompleted', label: 'Не завершені' },
+                            { value: 'overdue', label: 'Просрочені' },
+                            ]}
+                        />
                     </div>
                 </div>
             </div>

@@ -36,19 +36,6 @@
     margin-bottom: 10px;
 }
 
-.input{
-    border: 1px solid var(--text);
-    border-radius: 4px;
-    width: 100%;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--bg);
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 5px;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-}
-
 .wrapper {
     width: 20vw;
 }
@@ -98,34 +85,6 @@
     position: relative;
   }
   
-  .searchInput {
-    width: 95%;
-    height: 45px;
-    font-size: 14px;
-    padding-left: 2.5rem;
-    border: 0;
-    border-radius: 12px;
-    background-color: #212121;
-    outline: none;
-    color: #bdbecb;
-    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
-    cursor: text;
-    z-index: 0;
-    margin-bottom: 10px;
-  }
-  
-  .searchInput::placeholder {
-    color: #bdbecb;
-  }
-  
-  .searchInput:hover, .searchInput:focus  {
-    width: 100%;
-  }
-  
-  .searchInput:active, .input:active {
-    transform: scale(0.95);
-  }
-  
   .searchIcon {
     position: absolute;
     left: 1rem;
@@ -168,36 +127,33 @@
     display: flex;
     justify-content: center;
   }
+
+  @media (max-width: 1024px) {
+    .left, .right {
+      width: 40vw;
+    }
+
+    .wrapper{
+      width: 100%;
+    }
+  }
   
   @media (max-width: 768px) {
     .container {
       flex-direction: column;
       align-items: stretch;
     }
-  
-    .input {
-      width: 80%;
-      font-size: 14px;
-    }
-
-    .wrapper{
-      width: 100%;
-    }
 
     .left, .right {
       width: 70vw;
     }
+
+    .wrapper{
+      width: 40vw;
+    }
   
     .createBtn, .searchBtn {
       width: 100%;
-    }
-  
-    .searchInput {
-      width: 90%;
-    }
-  
-    .searchSelect {
-      width: 90%;
     }
   
     .group {
@@ -210,9 +166,6 @@
       flex-direction: column;
       gap: 10px;
     }
-    .input {
-      width: 100%;
-    }
   }
   
   @media (max-width: 480px) {
@@ -222,14 +175,5 @@
 
     .left, .right {
       width: 50vw;
-    }
-  
-    .input {
-      width: 100%;
-    }
-  
-    .button {
-      font-size: 16px;
-      padding: 8px 16px;
     }
   }
