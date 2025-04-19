@@ -1,8 +1,8 @@
 import axios from "axios";
 import dayjs from "dayjs";
 
-const BOT_TOKEN = "7811936235:AAHvcYPIFE7K_V6y6aQ-AcTsNlmrXbZMc_0";
-const CHAT_ID = "772557039";
+const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
 const URL_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
 export const sendTelegramMessage = (sale) => {
