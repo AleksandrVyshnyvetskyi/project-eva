@@ -63,86 +63,96 @@ const RepairForm = ({ onAddRepair }) => {
     return (
         <>
             <form onSubmit={handleSubmit} className={styles.form}>
+                <Field
+                    type="date"
+                    name="dateReceived"
+                    value={formData.dateReceived}
+                    onChange={handleChange}
+                />
 
-            <Field
-                type="date"
-                name="dateReceived"
-                value={formData.dateReceived}
-                onChange={handleChange}
-            />
+                <Field
+                    type="select"
+                    name="brand"
+                    value={formData.brand}
+                    onChange={handleChange}
+                    required
+                    options={[
+                        { value: "", label: "Бренд", disabled: true },
+                        { value: "Samsung", label: "Samsung" },
+                        { value: "Xiaomi", label: "Xiaomi" },
+                        { value: "Oscal", label: "Oscal" },
+                        { value: "Motorola", label: "Motorola" },
+                        { value: "Realme", label: "Realme" },
+                        { value: "Nomi", label: "Nomi" },
+                        { value: "Sigma", label: "Sigma" },
+                        { value: "Ergo", label: "Ergo" },
+                    ]}
+                />
 
-            <Field
-                type="select"
-                name="brand"
-                value={formData.brand}
-                onChange={handleChange}
-                required
-                options={[
-                { value: '', label: 'Бренд', disabled: true },
-                { value: 'Samsung', label: 'Samsung' },
-                { value: 'Xiaomi', label: 'Xiaomi' },
-                { value: 'Oscal', label: 'Oscal' },
-                { value: 'Motorola', label: 'Motorola' },
-                { value: 'Realme', label: 'Realme' },
-                { value: 'Nomi', label: 'Nomi' },
-                { value: 'Sigma', label: 'Sigma' },
-                { value: 'Ergo', label: 'Ergo' },
-                ]}
-            />
+                <Field
+                    name="model"
+                    placeholder="Модель"
+                    type="text"
+                    value={formData.model}
+                    onChange={handleChange}
+                    required
+                />
 
-            <Field
-                name="model"
-                placeholder="Модель"
-                type="text"
-                value={formData.model}
-                onChange={handleChange}
-                required
-            />
+                <Field
+                    name="imei"
+                    placeholder="IMEI"
+                    type="text"
+                    value={formData.imei}
+                    onChange={handleChange}
+                    required
+                />
 
-            <Field
-                name="imei"
-                placeholder="IMEI"
-                type="text"
-                value={formData.imei}
-                onChange={handleChange}
-                required
-            />
+                <Field
+                    type="select"
+                    name="store"
+                    value={formData.store}
+                    onChange={handleChange}
+                    required
+                    options={[
+                        { value: "", label: "Оберіть Магазин", disabled: true },
+                        ...Array.from({ length: 13 }, (_, i) => ({
+                            value: `SmS ${i + 1}`,
+                            label: `SmS ${i + 1}`,
+                        })),
+                    ]}
+                />
 
-            <Field
-                type="select"
-                name="store"
-                value={formData.store}
-                onChange={handleChange}
-                required
-                options={[
-                { value: '', label: 'Оберіть Магазин', disabled: true },
-                ...Array.from({ length: 13 }, (_, i) => ({
-                    value: `SmS ${i + 1}`,
-                    label: `SmS ${i + 1}`
-                }))
-                ]}
-            />
+                <Field
+                    type="select"
+                    name="serviceInfo"
+                    value={formData.service}
+                    onChange={handleChange}
+                    required
+                    options={[
+                        { value: "", label: "Оберіть Сервіс", disabled: true },
+                        { value: "ТОВ Дейна", label: "ТОВ Дейна (Sigma)" },
+                        {
+                            value: "ТОВ MTI Сервіс",
+                            label: "ТОВ MTI Сервіс (Motorola)",
+                        },
+                        {
+                            value: "Майстерня №1",
+                            label: "Майстерня №1 (Nomi/Realme/Xiaomi)",
+                        },
+                        { value: "Elffix", label: "Elffix (Oscal)" },
+                        { value: "FyooCha", label: "FyooCha (Samsung)" },
+                        { value: "СВП Плюс", label: "СВП Плюс (Nokia)" },
+                        {
+                            value: "Цитрус Сервіс/ТОВ'Рітейл Компані'",
+                            label: 'Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)',
+                        },
+                        { value: "Юг", label: "Юг (Ergo)" },
+                    ]}
+                />
 
-            <Field
-                type="select"
-                name="serviceInfo"
-                value={formData.service}
-                onChange={handleChange}
-                required
-                options={[
-                { value: '', label: 'Оберіть Сервіс', disabled: true },
-                { value: 'ТОВ Дейна', label: 'ТОВ Дейна (Sigma)' },
-                { value: 'ТОВ MTI Сервіс', label: 'ТОВ MTI Сервіс (Motorola)' },
-                { value: 'Майстерня №1', label: 'Майстерня №1 (Nomi/Realme/Xiaomi)' },
-                { value: 'Elffix', label: 'Elffix (Oscal)' },
-                { value: 'FyooCha', label: 'FyooCha (Samsung)' },
-                { value: 'СВП Плюс', label: 'СВП Плюс (Nokia)' },
-                { value: 'Цитрус Сервіс/ТОВ\'Рітейл Компані\'', label: 'Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)' },
-                { value: 'Юг', label: 'Юг (Ergo)' },
-                ]}
-            />
-                
-                <Button variant="buttonSubmit" type="submit">Додати відправку</Button>
+                <Button variant="buttonSubmit" type="submit">
+                    Додати відправку
+                </Button>
             </form>
             <ToastContainer position="top-right" autoClose={3000} />
         </>

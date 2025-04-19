@@ -11,7 +11,7 @@ import RepairForm from "./RepairForm";
 import RepairTable from "./RepairTable";
 import RepairInfo from "./RepairInfo";
 
-import inv from '../../styles/Sales.module.css'
+import inv from "../../styles/Sales.module.css";
 
 const RepairsContainer = () => {
     const [repairs, setRepairs] = useState([]);
@@ -94,18 +94,28 @@ const RepairsContainer = () => {
     };
 
     const handleInformTableToggle = () => {
-        setIsRepairInfo((prev) => !prev)
-    }
+        setIsRepairInfo((prev) => !prev);
+    };
 
     return (
         <>
             <h2 className={styles.title}>⚙️ Відправки в сервіс:</h2>
             <div className={styles.btnWrapper}>
-                <Button variant='width20' onClick={handleFormToggle} type='button'>
+                <Button
+                    variant="width20"
+                    onClick={handleFormToggle}
+                    type="button"
+                >
                     {isFormVisible ? "Сховати форму ↑" : "Створити відправку ↓"}
                 </Button>
-                <Button variant='width20' onClick={handleInformTableToggle} type='button'>
-                    {isRepairInfo ? "Сховати інформація ↑" : "Інформація про сервіси ↓"}
+                <Button
+                    variant="width20"
+                    onClick={handleInformTableToggle}
+                    type="button"
+                >
+                    {isRepairInfo
+                        ? "Сховати інформація ↑"
+                        : "Інформація про сервіси ↓"}
                 </Button>
             </div>
 
@@ -122,7 +132,7 @@ const RepairsContainer = () => {
                     isRepairInfo ? inv.visible : ""
                 }`}
             >
-                <RepairInfo/>
+                <RepairInfo />
             </div>
 
             <RepairTable

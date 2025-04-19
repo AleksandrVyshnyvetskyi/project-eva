@@ -63,7 +63,7 @@ const Sales = () => {
     if (isLoading) {
         return <Loader />;
     }
-    
+
     const handleFormToggle = () => {
         setIsFormVisible((prev) => !prev);
     };
@@ -163,10 +163,10 @@ const Sales = () => {
         .sort((a, b) => {
             const dateA = dayjs(a.date).format("YYYY-MM-DD");
             const dateB = dayjs(b.date).format("YYYY-MM-DD");
-        
+
             if (dateA < dateB) return -1;
             if (dateA > dateB) return 1;
-        
+
             return Number(a.orderNumber) - Number(b.orderNumber);
         });
 
@@ -241,9 +241,11 @@ const Sales = () => {
             <h2 className={styles.title}>📦 Продажі:</h2>
             <div className={styles.container}>
                 <div className={styles.left}>
-                    <Button variant="button" onClick={handleFormToggle}>{isFormVisible
+                    <Button variant="button" onClick={handleFormToggle}>
+                        {isFormVisible
                             ? "Сховати форму ↑"
-                            : "Створити замовлення ↓"}</Button>
+                            : "Створити замовлення ↓"}
+                    </Button>
                     <div
                         className={`${styles.formPanel} ${
                             isFormVisible ? styles.visible : ""
@@ -253,7 +255,9 @@ const Sales = () => {
                     </div>
                 </div>
                 <div className={styles.right}>
-                    <Button variant="button" onClick={handleButtonClick}>{isInputVisible ? "Сховати ↑" : "Пошук ↓"}</Button>
+                    <Button variant="button" onClick={handleButtonClick}>
+                        {isInputVisible ? "Сховати ↑" : "Пошук ↓"}
+                    </Button>
                     <div
                         className={`${styles.searchPanel} ${
                             isInputVisible ? styles.visible : ""
@@ -271,7 +275,7 @@ const Sales = () => {
                             </svg>
                             <Field
                                 type="text"
-                                className='searchInput'
+                                className="searchInput"
                                 placeholder="Введіть значення"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -279,14 +283,17 @@ const Sales = () => {
                         </div>
                         <Field
                             type="select"
-                            className='searchInput'
+                            className="searchInput"
                             onChange={(e) => setFilterStatus(e.target.value)}
                             value={filterStatus}
                             options={[
-                            { value: 'all', label: 'Усі' },
-                            { value: 'completed', label: 'Завершені' },
-                            { value: 'notCompleted', label: 'Не завершені' },
-                            { value: 'overdue', label: 'Просрочені' },
+                                { value: "all", label: "Усі" },
+                                { value: "completed", label: "Завершені" },
+                                {
+                                    value: "notCompleted",
+                                    label: "Не завершені",
+                                },
+                                { value: "overdue", label: "Просрочені" },
                             ]}
                         />
                     </div>
@@ -295,14 +302,20 @@ const Sales = () => {
 
             <div className={styles.monthNavigation}>
                 <div>
-                <Button variant="button" type="submit" onClick={() => {
+                    <Button
+                        variant="button"
+                        type="submit"
+                        onClick={() => {
                             const newDate = dayjs()
                                 .year(currentYear)
                                 .month(currentMonth)
                                 .subtract(1, "month");
                             setCurrentMonth(newDate.month());
                             setCurrentYear(newDate.year());
-                        }}>← Назад</Button>
+                        }}
+                    >
+                        ← Назад
+                    </Button>
                 </div>
                 <div>
                     <p>
@@ -316,14 +329,19 @@ const Sales = () => {
                 <div>
                     {(currentMonth !== dayjs().month() ||
                         currentYear !== dayjs().year()) && (
-                            <Button variant="button" onClick={() => {
+                        <Button
+                            variant="button"
+                            onClick={() => {
                                 const newDate = dayjs()
                                     .year(currentYear)
                                     .month(currentMonth)
                                     .add(1, "month");
                                 setCurrentMonth(newDate.month());
                                 setCurrentYear(newDate.year());
-                            }}>Вперед →{" "}</Button>
+                            }}
+                        >
+                            Вперед →{" "}
+                        </Button>
                     )}
                 </div>
             </div>
@@ -333,7 +351,9 @@ const Sales = () => {
                 handleCheckboxChange={handleCheckboxChange}
             />
             <div className={styles.containerForDownloadBtn}>
-            <Button variant="buttonSubmit" onClick={downloadExcel}>Завантажити Excel</Button>
+                <Button variant="buttonSubmit" onClick={downloadExcel}>
+                    Завантажити Excel
+                </Button>
             </div>
             <ToastContainer />
         </>
