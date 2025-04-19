@@ -2,6 +2,9 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  NODE_OPTIONS = "--no-optional"
+
 [context.production.environment]
   NODE_VERSION="20"
   VITE_FIREBASE_API_KEY="AIzaSyC9DdJWQavE5mqlJyRAonBEmEiaEqU6SQE"
