@@ -48,7 +48,6 @@ const AdminPanel = () => {
             <th>Email</th>
             <th>Ім'я</th>
             <th>Роль</th>
-            <th>Зміна ролі</th>
           </tr>
         </thead>
         <tbody>
@@ -56,7 +55,6 @@ const AdminPanel = () => {
             <tr key={user.id}>
               <td>{user.email}</td>
               <td>{user.name}</td>
-              <td>{user.role}</td>
               <td>
               <Field
                 type="select"
