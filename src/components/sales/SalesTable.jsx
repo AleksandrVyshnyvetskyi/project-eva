@@ -106,42 +106,30 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                         editingCell?.id === sale.id &&
                         editingCell?.field === field;
                     const editInput = (field, value, type = "text") =>
-                        field === "payment" ? (
-                            <Field
-                                type="text"
-                                value={newValue || value}
-                                onChange={(e) => {
-                                    const selectedValue = e.target.value;
-                                    setNewValue(selectedValue);
-                                }}
-                                onBlur={handleSave}
-                                onKeyDown={handleKeyDown}
-                                className='editInput'
-                                autoFocus
-                        />
-                        ) : (
-                            <Field
-                                type={type}
-                                value={newValue || value}
-                                onChange={handleChange}
-                                onBlur={handleSave}
-                                onKeyDown={handleKeyDown}
-                                className='editInput'
-                                autoFocus
-                            />
-                        );
+                    <Field
+                    type={type}
+                    value={newValue || value}
+                    onChange={handleChange}
+                    onBlur={handleSave}
+                    onKeyDown={handleKeyDown}
+                    className="editInput"
+                    autoFocus
+                />
 
                     return (
                         <tr
-                            key={sale.id}
-                            style={{
-                                backgroundColor: received[sale.id]
-                                    ? "lightgreen"
-                                    : isOldOrder(sale.date) &&
-                                      !received[sale.id]
-                                    ? "coral"
-                                    : null ,
-                            }}
+                             key={sale.id}
+                                style={{
+                                    backgroundColor:
+                                        sale.status === "Отримано"
+                                            ? "lightgreen"
+                                            : sale.status === "Відмова"
+                                            ? "#fbb"
+                                            : sale.status === "Відправлено"
+                                            ? "#90ee90"
+                                            : isOldOrder(sale.date)
+                                            ? "coral"
+                                            : null,}}
                         >
                             <td
                                 onClick={() =>
@@ -295,17 +283,37 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                                     : sale.ttn}
                             </td>
                             <td>
-                                <input
-                                    type="checkbox"
-                                    checked={received[sale.id] || false}
-                                    onChange={() => {
-                                        handleCheckboxChange(sale.id);
-                                        if (!received[sale.id]) {
-                                            sendTelegramMessage(sale);
-                                        }
-                                    }}
-                                    className={styles.checkbox}
-                                />
+                            <Field
+                                type="select"
+                                name="status"
+                                value={sale.status || "Не відправлено"}
+                                onChange={async (e) => {
+                                    const newStatus = e.target.value;
+                                    const saleRef = doc(db, "sales", sale.id);
+                                    await updateDoc(saleRef, { status: newStatus });
+                                    sale.status = newStatus;
+
+                                    if (newStatus === "Отримано") {
+                                        sendTelegramMessage(sale);
+                                    }
+
+                                    toast.success(`Статус змінено на "${newStatus}"`, {
+                                        position: "top-right",
+                                        autoClose: 3000,
+                                        hideProgressBar: true,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                    });
+                                }}
+                                className="statusSelect"
+                                options={[
+                                    { value: "Не відправлено", label: "Не відправлено" },
+                                    { value: "Відправлено", label: "Відправлено" },
+                                    { value: "Отримано", label: "Отримано" },
+                                    { value: "Відмова", label: "Відмова" }
+                                ]}
+                            />
                             </td>
                         </tr>
                     );
