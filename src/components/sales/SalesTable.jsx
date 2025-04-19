@@ -6,6 +6,7 @@ import styles from "../../styles/Table.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Field from "../common/Field";
+import { sendTelegramMessage } from "../../utils/telegram";
 
 const SalesTable = ({ data, received, handleCheckboxChange }) => {
     const [editingCell, setEditingCell] = useState(null);
@@ -297,9 +298,12 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                                 <input
                                     type="checkbox"
                                     checked={received[sale.id] || false}
-                                    onChange={() =>
-                                        handleCheckboxChange(sale.id)
-                                    }
+                                    onChange={() => {
+                                        handleCheckboxChange(sale.id);
+                                        if (!received[sale.id]) {
+                                            sendTelegramMessage(sale);
+                                        }
+                                    }}
                                     className={styles.checkbox}
                                 />
                             </td>
