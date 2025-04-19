@@ -6,7 +6,6 @@ import Analytics from "../pages/Analytics";
 import AdminPanel from "../components/admin/AdminPanel";
 import User from "../pages/User";
 
-
 const AppRoutes = () => {
     return (
         <Routes>

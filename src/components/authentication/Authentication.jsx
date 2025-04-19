@@ -1,10 +1,7 @@
 import AuthenticationForm from "./AuthenticationFrom";
 
 const Authentication = () => {
-
-    return (
-        <AuthenticationForm/>
-    )
-}
+    return <AuthenticationForm />;
+};
 
 export default Authentication;

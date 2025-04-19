@@ -34,23 +34,22 @@ const StatisticsWithChart = () => {
 
     useEffect(() => {
         const fetchOrders = async () => {
-          try {
-            const querySnapshot = await getDocs(collection(db, "sales"));
-            const ordersData = querySnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setOrders(ordersData);
-          } catch (error) {
-            console.error("Помилка при завантаженні статистики:", error);
-          } finally {
-            setIsLoading(false);
-          }
+            try {
+                const querySnapshot = await getDocs(collection(db, "sales"));
+                const ordersData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setOrders(ordersData);
+            } catch (error) {
+                console.error("Помилка при завантаженні статистики:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
         fetchOrders();
-      }, []);
+    }, []);
 
-      
     if (isLoading) {
         return <Loader />;
     }
@@ -80,7 +79,7 @@ const StatisticsWithChart = () => {
     const receivedOrdersByDay = allDays.map((day) => {
         const receivedOrdersForDay = filteredOrders.filter(
             (order) =>
-                dayjs(order.date).date() === day && order.status === 'Отримано'
+                dayjs(order.date).date() === day && order.status === "Отримано"
         );
         return receivedOrdersForDay.length;
     });
@@ -88,7 +87,7 @@ const StatisticsWithChart = () => {
     const notReceivedOrdersByDay = allDays.map((day) => {
         const receivedOrdersForDay = filteredOrders.filter(
             (order) =>
-                dayjs(order.date).date() === day && order.status === 'Відмова'
+                dayjs(order.date).date() === day && order.status === "Відмова"
         );
         return receivedOrdersForDay.length;
     });
@@ -111,7 +110,6 @@ const StatisticsWithChart = () => {
                 data: notReceivedOrdersByDay,
                 backgroundColor: "#fc7777",
             },
-
         ],
     };
 
@@ -149,11 +147,16 @@ const StatisticsWithChart = () => {
             <div className={styles.container}>
                 <div className={styles.buttonWrapper}>
                     <div>
-                        <Button variant="button" onClick={() =>
+                        <Button
+                            variant="button"
+                            onClick={() =>
                                 setCurrentMonth(
                                     currentMonth === 0 ? 11 : currentMonth - 1
                                 )
-                            }>← Назад</Button>
+                            }
+                        >
+                            ← Назад
+                        </Button>
                     </div>
                     <div>
                         <p>
@@ -167,15 +170,19 @@ const StatisticsWithChart = () => {
                     <div>
                         {currentMonth !== dayjs().month() ||
                         currentYear !== dayjs().year() ? (
-                            <Button variant="button" onClick={() =>
-                                setCurrentMonth(
-                                    currentMonth === 11
-                                        ? 0
-                                        : currentMonth + 1
-                                )
-                            }>Вперед →</Button>
+                            <Button
+                                variant="button"
+                                onClick={() =>
+                                    setCurrentMonth(
+                                        currentMonth === 11
+                                            ? 0
+                                            : currentMonth + 1
+                                    )
+                                }
+                            >
+                                Вперед →
+                            </Button>
                         ) : null}
-
                     </div>
                 </div>
 
@@ -190,7 +197,7 @@ const StatisticsWithChart = () => {
                     </h3>
                     <p>Кількість замовлень: {filteredOrders.length}</p>
                     <p>
-                        Завершені замовлення:{" "} 
+                        Завершені замовлення:{" "}
                         {
                             filteredOrders.filter((order) => order.received)
                                 .length
@@ -200,7 +207,10 @@ const StatisticsWithChart = () => {
                         Ітогова сума завершених замовлень:{" "}
                         {filteredOrders
                             .filter((order) => order.received)
-                            .reduce((total, order) => total + Number(order.amount), 0)}{" "}
+                            .reduce(
+                                (total, order) => total + Number(order.amount),
+                                0
+                            )}{" "}
                         грн
                     </p>
                 </div>

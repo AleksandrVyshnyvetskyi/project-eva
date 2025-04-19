@@ -15,7 +15,7 @@ const Home = () => {
             setLoading(false);
         });
 
-        return () => unsubscribe(); 
+        return () => unsubscribe();
     }, []);
 
     if (loading) return null;
@@ -32,9 +32,7 @@ const Home = () => {
                 <span className={style.accent}>А</span>налітиці
             </h1>
 
-            <div className={style.container}>
-                {!user && <Authentication />}
-            </div>
+            <div className={style.container}>{!user && <Authentication />}</div>
 
             <ToastContainer />
         </>

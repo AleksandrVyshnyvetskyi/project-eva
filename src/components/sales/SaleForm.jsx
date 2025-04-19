@@ -77,7 +77,7 @@ const SaleForm = ({ onAdd }) => {
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
             <Field
-            className="saleField"
+                className="saleField"
                 type="text"
                 name="orderNumber"
                 placeholder="Номер замовлення"
@@ -87,7 +87,7 @@ const SaleForm = ({ onAdd }) => {
             <div className={styles.wrapper}>
                 {form.items.map((item, index) => (
                     <Field
-                    className="saleField"
+                        className="saleField"
                         key={index}
                         type="text"
                         name="item"
@@ -96,10 +96,15 @@ const SaleForm = ({ onAdd }) => {
                         onChange={(e) => handleChange(e, index)}
                     />
                 ))}
-                <Button variant="buttonAdd" onClick={handleAddItem} type="submit">Додати товар</Button>
+                <Button
+                    variant="buttonAdd"
+                    onClick={handleAddItem}
+                    type="submit"
+                >
+                    Додати товар
+                </Button>
             </div>
             <Field
-
                 className="saleField"
                 lang="uk"
                 type="date"
@@ -108,28 +113,28 @@ const SaleForm = ({ onAdd }) => {
                 onChange={handleChange}
             />
             <Field
-            className="saleField"
+                className="saleField"
                 name="client"
                 placeholder="Ім'я клієнта"
                 value={form.client}
                 onChange={handleChange}
             />
             <Field
-            className="saleField"
+                className="saleField"
                 name="phone"
                 placeholder="Номер телефону"
                 value={form.phone}
                 onChange={handleChange}
             />
             <Field
-            className="saleField"
+                className="saleField"
                 name="address"
                 placeholder="Адреса"
                 value={form.address}
                 onChange={handleChange}
             />
             <Field
-            className="saleField"
+                className="saleField"
                 name="amount"
                 type="number"
                 placeholder="Сума замовлення"
@@ -137,32 +142,34 @@ const SaleForm = ({ onAdd }) => {
                 onChange={handleChange}
             />
             <Field
-            className="saleField"
+                className="saleField"
                 name="ttn"
                 placeholder="ТТН"
                 value={form.ttn}
                 onChange={handleChange}
-            /> 
-              <Field
-              className="saleField"
+            />
+            <Field
+                className="saleField"
                 type="select"
                 name="payment"
                 value={form.payment}
                 onChange={handleChange}
                 options={[
-                { value: '', label: 'Спосіб оплати', disabled: true },
-                { value: 'Післяплата', label: 'Післяплата' },
-                { value: 'Готівка', label: 'Готівка' },
-                { value: 'Карта', label: 'Карта' },
-                { value: 'Р/Р', label: 'Р/Р' },
-                { value: 'Плати пiзнiше', label: 'Плати пiзнiше' },
-                { value: 'О/Ч Приват Банк', label: 'О/Ч Приват Банк' },
-                { value: 'О/Ч Моно', label: 'О/Ч Моно' },
-                { value: 'О/Ч ПУМБ', label: 'О/Ч ПУМБ' },
-                { value: 'О/Ч Sens', label: 'О/Ч Sens' },
+                    { value: "", label: "Спосіб оплати", disabled: true },
+                    { value: "Післяплата", label: "Післяплата" },
+                    { value: "Готівка", label: "Готівка" },
+                    { value: "Карта", label: "Карта" },
+                    { value: "Р/Р", label: "Р/Р" },
+                    { value: "Плати пiзнiше", label: "Плати пiзнiше" },
+                    { value: "О/Ч Приват Банк", label: "О/Ч Приват Банк" },
+                    { value: "О/Ч Моно", label: "О/Ч Моно" },
+                    { value: "О/Ч ПУМБ", label: "О/Ч ПУМБ" },
+                    { value: "О/Ч Sens", label: "О/Ч Sens" },
                 ]}
             />
-            <Button variant="buttonSubmit" type="submit">Додати</Button>
+            <Button variant="buttonSubmit" type="submit">
+                Додати
+            </Button>
         </form>
     );
 };
