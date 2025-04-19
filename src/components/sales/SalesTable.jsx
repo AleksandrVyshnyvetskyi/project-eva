@@ -126,7 +126,7 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                                             : sale.status === "Відмова"
                                             ? "#fbb"
                                             : sale.status === "Відправлено"
-                                            ? "#90ee90"
+                                            ? "#eeee90"
                                             : isOldOrder(sale.date)
                                             ? "coral"
                                             : null,}}

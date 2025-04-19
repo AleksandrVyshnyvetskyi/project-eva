@@ -80,7 +80,15 @@ const StatisticsWithChart = () => {
     const receivedOrdersByDay = allDays.map((day) => {
         const receivedOrdersForDay = filteredOrders.filter(
             (order) =>
-                dayjs(order.date).date() === day && order.received === true
+                dayjs(order.date).date() === day && order.status === 'Отримано'
+        );
+        return receivedOrdersForDay.length;
+    });
+
+    const notReceivedOrdersByDay = allDays.map((day) => {
+        const receivedOrdersForDay = filteredOrders.filter(
+            (order) =>
+                dayjs(order.date).date() === day && order.status === 'Відмова'
         );
         return receivedOrdersForDay.length;
     });
@@ -98,6 +106,12 @@ const StatisticsWithChart = () => {
                 data: receivedOrdersByDay,
                 backgroundColor: "#63f1cb",
             },
+            {
+                label: "Відмова",
+                data: notReceivedOrdersByDay,
+                backgroundColor: "#fc7777",
+            },
+
         ],
     };
 
