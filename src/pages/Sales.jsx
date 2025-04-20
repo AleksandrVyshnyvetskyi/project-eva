@@ -116,7 +116,7 @@ const Sales = () => {
     };
 
     const normalizePhoneNumber = (phone) => {
-        return phone.replace(/[^\d]/g, "").toLowerCase();
+        return phone.replace(/[^\d]/g, "");
     };
 
     const normalizeString = (str) => {
@@ -151,12 +151,14 @@ const Sales = () => {
                 normalizedPhone.includes(normalizedSearchQuery);
 
             const isCompleted = received[sale.id];
-            const isOverdue = dayjs().diff(dayjs(sale.date), "day") >= 9;
+            const isOverdue = dayjs().diff(dayjs(sale.date), "day") >= 9 && sale.status === "Відправлено";
+            const notCompleted = sale.status === "Відправлено" || sale.status === "Не відправлено"
+            const isRefusal = sale.status === "Відмова";
 
             if (filterStatus === "completed") return searchMatch && isCompleted;
-            if (filterStatus === "notCompleted")
-                return searchMatch && !isCompleted;
+            if (filterStatus === "notCompleted") return searchMatch && notCompleted;
             if (filterStatus === "overdue") return searchMatch && isOverdue;
+            if (filterStatus === "isRefusal") return searchMatch && isRefusal;
 
             return searchMatch;
         })
@@ -195,7 +197,7 @@ const Sales = () => {
             "Форма оплати": sale.payment,
             Сума: sale.amount,
             ТТН: sale.ttn,
-            Отримано: sale.received ? "Так" : "Ні",
+            Отримано: sale.status,
         }));
 
         const ws = XLSX.utils.json_to_sheet(dataForExcel);
@@ -206,7 +208,7 @@ const Sales = () => {
                 wch:
                     Math.max(
                         ...dataForExcel.map((row) => row[col].toString().length)
-                    ) + 2,
+                    ) + 4,
             }));
         ws["!cols"] = wscols;
 
@@ -293,6 +295,10 @@ const Sales = () => {
                                     value: "notCompleted",
                                     label: "Не завершені",
                                 },
+                                {
+                                    value: "isRefusal",
+                                    label: "Відмова",
+                                },
                                 { value: "overdue", label: "Просрочені" },
                             ]}
                         />
@@ -347,7 +353,6 @@ const Sales = () => {
             </div>
             <SalesTable
                 data={sortedSales}
-                received={received}
                 handleCheckboxChange={handleCheckboxChange}
             />
             <div className={styles.containerForDownloadBtn}>

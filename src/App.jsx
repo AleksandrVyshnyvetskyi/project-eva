@@ -6,12 +6,26 @@ import AuthenticationDetails from "./components/authentication/AuthenticationDet
 import { useAuth } from "./context/AuthContext";
 import Footer from "./components/Footer/Footer";
 import stylesFooter from "./styles/Footer.module.css";
+import { useEffect, useState } from "react";
 
 function AppContent() {
     const { role } = useAuth();
-
+    const [theme, setTheme] = useState("dark");
     const allowedRoles = ["admin", "creater"];
     const canViewNav = allowedRoles.includes(role);
+
+    useEffect(() => {
+        const saved = localStorage.getItem("theme") || "dark";
+        setTheme(saved);
+        document.documentElement.className = saved;
+    }, []);
+    
+    const toggleTheme = () => {
+        const newTheme = theme === "dark" ? "light" : "dark";
+        setTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+        document.documentElement.className = newTheme;
+    };
 
     return (
         <>
@@ -19,6 +33,7 @@ function AppContent() {
                 <h2 className={style.title}>ЕВА</h2>
 
                 <nav>
+                    <input type="checkbox" className={style.themeCheckbox} checked={theme === "dark"} onChange={toggleTheme}/>
                     {canViewNav && (
                         <>
                             <Link className={style.link} to="/">

@@ -1,5 +1,4 @@
 .card {
-    --bg: #212121;
     background-color: var(--bg);
     padding: 1rem 2rem;
     border-radius: 1.25rem;
@@ -25,7 +24,7 @@
   .words {
     overflow: hidden;
     position: relative;
-    height: 25px; /* высота одной строки */
+    height: 25px;
   }
   
   .words::after {

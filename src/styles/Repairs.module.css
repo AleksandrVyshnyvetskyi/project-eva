@@ -1,6 +1,6 @@
 .title {
     padding: 30px;
-    border-bottom: 2px solid #212121;
+    border-bottom: 2px solid var(--second-bg);
     font-size: 28px;
     margin-bottom: 60px;
 }

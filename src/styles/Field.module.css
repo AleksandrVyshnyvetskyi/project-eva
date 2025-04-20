@@ -11,16 +11,10 @@
   }
   
   .input {
-    border: 1px solid var(--text);
+    border: 1px solid #e0e0e0;
     background-color: #fff;
-    color: var(--bg);
+    color: #191919;
     width: 40vw;
-  }
-  
-  .inputBase:hover,
-  .inputBase:focus {
-    transform: scale(0.95);
-    border-color: #888;
   }
   
   .textarea {
@@ -28,26 +22,33 @@
     min-height: 80px;
     background-color: #fff;
     border: 1px solid var(--text);
-    color: var(--bg);
+    color: #191919;;
   }
   
   .select {
     width: 40vw;
     background-color: #fff;
-    border: 1px solid var(--text);
-    color: var(--bg);
+    border: 1px solid #e0e0e0;
+    color: #191919;
   }
   
   .searchInput {
     width: 100%;
     height: 45px;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
     padding-left: 2.5rem;
-    border: 0;
-    border-radius: 12px;
-    background-color: #212121;
-    color: #bdbecb;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #191919;
     margin-bottom: 10px;
+  }
+
+  .inputBase:hover,
+  .inputBase:focus, .searchInput:hover, .searchInput:focus {
+    transform: scale(0.95);
+    border-color: #888;
   }
   
   .editInput {
@@ -80,7 +81,6 @@
   .checkbox {
     width: 18px;
     height: 18px;
-    /* accent-color: var(--text); */
     cursor: pointer;
     transition: transform 0.2s ease;
   }
@@ -115,7 +115,6 @@
   }
 
   .editInput {
-    /* box-sizing: border-box; */
     width: 100%;
     height: auto;
     border: none;
@@ -137,7 +136,6 @@
 
   }
   
-  /* Адаптивность */
   @media (max-width: 768px) {
     .inputBase {
       font-size: 14px;

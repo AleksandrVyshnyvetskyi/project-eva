@@ -6,7 +6,7 @@
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 0.4em;
-    background-color: #171717;
+    background-color: var(--form-bg);
     border: 1px solid black;
     border-radius: 6px;
     transition: .3s ease-in-out;
@@ -20,7 +20,7 @@
   .heading {
     text-align: center;
     margin: 2em;
-    color: rgb(255, 255, 255);
+    color: var(--white);
     font-size: 1.5em;
     line-height: 1.5;
     font-weight: 600;
@@ -39,15 +39,15 @@
     padding: 0.6em;
     border: 1px solid transparent;
     outline: none;
-    color: white;
-    background-color: #171717;
-    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: var(--white);
+    background-color: var(--form-bg);
+    box-shadow: var(--box-shadow);
   }
   
   .inputIcon {
     height: 1.3em;
     width: 1.3em;
-    fill: white;
+    fill: var(--white);
   }
   
   .inputField {

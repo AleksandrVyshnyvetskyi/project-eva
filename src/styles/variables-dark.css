@@ -1,0 +1,12 @@
+.dark {
+  --accent: blueviolet;
+  --bg: #191919;
+  --second-bg: #212121;
+  --text: #e0e0e0;
+  --second-accent: #63f1cb;
+  --warning-accent: #FF6B6B;
+  --form-bg: #171717;
+  --form-btn: #252525;
+  --white: #fff;
+  --box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
