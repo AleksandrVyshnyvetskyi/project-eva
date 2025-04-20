@@ -41,7 +41,12 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                 ? newValue.split(",").map((item) => item.trim())
                 : newValue || data.find((item) => item.id === id)[field];
 
-        await updateDoc(saleRef, { [field]: updatedValue });
+        try {
+            await updateDoc(saleRef, { [field]: updatedValue });
+        } catch (error) {
+            console.error("Помилка при збереженні:", error);
+            toast.error("Не вдалося зберегти зміни");
+        }
 
         const index = data.findIndex((item) => item.id === id);
         if (index !== -1) {
@@ -108,7 +113,7 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                     const editInput = (field, value, type = "text") => (
                         <Field
                             type={type}
-                            value={newValue || value}
+                            value={newValue}
                             onChange={handleChange}
                             onBlur={handleSave}
                             onKeyDown={handleKeyDown}
@@ -126,10 +131,10 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                                         ? "lightgreen"
                                         : sale.status === "Відмова"
                                         ? "#fbb"
+                                        : sale.status === "Відправлено" && isOldOrder(sale.date)
+                                        ? "coral"
                                         : sale.status === "Відправлено"
                                         ? "#eeee90"
-                                        : isOldOrder(sale.date)
-                                        ? "coral"
                                         : null,
                             }}
                         >
