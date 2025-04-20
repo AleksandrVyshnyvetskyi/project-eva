@@ -199,14 +199,21 @@ const StatisticsWithChart = () => {
                     <p>
                         Завершені замовлення:{" "}
                         {
-                            filteredOrders.filter((order) => order.received)
+                            filteredOrders.filter((order) => order.status === "Отримано")
+                                .length
+                        }
+                    </p>
+                    <p>
+                        Відмов від замовлення:{" "}
+                        {
+                            filteredOrders.filter((order) => order.status === "Відмова")
                                 .length
                         }
                     </p>
                     <p>
                         Ітогова сума завершених замовлень:{" "}
                         {filteredOrders
-                            .filter((order) => order.received)
+                            .filter((order) => order.status === "Отримано")
                             .reduce(
                                 (total, order) => total + Number(order.amount),
                                 0

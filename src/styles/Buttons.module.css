@@ -1,4 +1,3 @@
-/* Общие стили */
 .buttonBase {
   font-family: Montserrat, Roboto, sans-serif;
   font-weight: 600;
@@ -10,7 +9,6 @@
   border-radius: 6px;
 }
 
-/* Submit Button */
 .buttonSubmit {
   composes: buttonBase;
   position: relative;
@@ -41,7 +39,7 @@
 
 .buttonSubmit:hover {
   scale: 1.1;
-  color: var(--text);
+  color: #e0e0e0;
   box-shadow: 0 0px 12px rgba(193, 163, 98, 0.4);
 }
 
@@ -49,7 +47,6 @@
   scale: 1;
 }
 
-/* Основная кнопка */
 .button {
   composes: buttonBase;
   background-color: var(--bg);
@@ -65,12 +62,11 @@
   background-color: transparent;
 }
 
-/* Кнопка добавления */
 .buttonAdd {
   composes: buttonBase;
   background-color: var(--accent);
   border: 2px solid transparent;
-  color: var(--text);
+  color: white;
 }
 
 .buttonAdd:hover {
@@ -78,11 +74,10 @@
   transform: scale(0.95);
 }
 
-/* Кнопка авторизации */
 .buttonAuthentication {
   composes: buttonBase;
-  background-color: #252525;
-  color: white;
+  background-color: var(--form-btn);
+  color: var(--white);
   border: 1px solid transparent;
   width: 48%;
   margin-bottom: 3em;
@@ -90,15 +85,14 @@
 
 .buttonAuthentication:hover {
   background-color: var(--bg);
-  color: white;
+  color: var(--white);
   border: 1px solid var(--accent);
 }
 
-/* Забыл пароль */
 .buttonForgotPassword {
   composes: buttonBase;
-  background-color: #252525;
-  color: white;
+  background-color: var(--form-btn);
+  color: var(--white);
   border: none;
   margin-bottom: 3em;
   padding: 5px;
@@ -108,7 +102,6 @@
   background-color: red;
 }
 
-/* Выйти */
 .outBtn {
   composes: buttonBase;
   background-color: transparent;
@@ -128,7 +121,6 @@
   width: 20vw;
 }
 
-/* 📱 Адаптивность */
 @media (max-width: 768px) {
   .buttonBase {
     padding: 8px 16px;

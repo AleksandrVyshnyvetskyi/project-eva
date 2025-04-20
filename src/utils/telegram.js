@@ -1,18 +1,11 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { toast } from "react-toastify";
 
 const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
 const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
 const URL_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
 export const sendTelegramMessage = (sale) => {
-
-    if (!BOT_TOKEN || !CHAT_ID) {
-        console.error("❌ Не задані BOT_TOKEN або CHAT_ID у .env файлі!");
-        return;
-    }
-
     const messageToBot = `
 Замовлення <b>№${sale.orderNumber}</b> одержано!
 Дата замовлення: <b>${dayjs(sale.date).format("DD.MM.YYYY")}</b>
@@ -32,6 +25,5 @@ export const sendTelegramMessage = (sale) => {
         })
         .catch((error) => {
             console.error("❌ Помилка при надсиланні в Telegram:", error);
-            toast.error(`❌ Помилка при надсиланні в Telegram: ${error}`)
         });
 };
