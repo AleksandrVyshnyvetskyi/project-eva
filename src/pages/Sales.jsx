@@ -150,8 +150,8 @@ const Sales = () => {
                 ) ||
                 normalizedPhone.includes(normalizedSearchQuery);
 
-            const isCompleted = received[sale.id];
-            const isOverdue = dayjs().diff(dayjs(sale.date), "day") >= 9;
+            const isCompleted = sale.status === "Отримано";
+            const isOverdue = dayjs().diff(dayjs(sale.date), "day") >= 9 && sale.status !== "Отримано";
 
             if (filterStatus === "completed") return searchMatch && isCompleted;
             if (filterStatus === "notCompleted")
