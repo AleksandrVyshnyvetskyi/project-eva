@@ -2,13 +2,13 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { db } from "../../firebase/firebase";
 import { updateDoc, doc } from "firebase/firestore";
-import styles from "../../styles/Table.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "../../styles/Table.module.css";
 import Field from "../common/Field";
 import { sendTelegramMessage } from "../../utils/telegram";
 
-const SalesTable = ({ data, received, handleCheckboxChange }) => {
+const SalesTable = ({ data }) => {
     const [editingCell, setEditingCell] = useState(null);
     const [newValue, setNewValue] = useState("");
 
@@ -33,54 +33,52 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
 
         const { id, field } = editingCell;
         const saleRef = doc(db, "sales", id);
+        const oldValue = data.find((item) => item.id === id)?.[field];
 
-        const updatedValue =
+        let updatedValue =
             field === "amount"
                 ? parseFloat(newValue)
                 : field === "items"
                 ? newValue.split(",").map((item) => item.trim())
-                : newValue || data.find((item) => item.id === id)[field];
+                : newValue.trim();
 
-                try {
-                    await updateDoc(saleRef, { [field]: updatedValue });
-                } catch (error) {
-                    console.error("Помилка при збереженні:", error);
-                    toast.error("Не вдалося зберегти зміни");
-                }
-
-        const index = data.findIndex((item) => item.id === id);
-        if (index !== -1) {
-            data[index][field] = updatedValue;
+        if (updatedValue === oldValue || updatedValue === "") {
+            setEditingCell(null);
+            return;
         }
 
-        const fieldName =
-            field === "client"
-                ? "Клієнт"
-                : field === "ttn"
-                ? "ТТН"
-                : field === "payment"
-                ? "Спосіб оплати"
-                : field === "items"
-                ? "Товар"
-                : field === "orderNumber"
-                ? "Номер замовлення"
-                : field === "amount"
-                ? "Сума"
-                : field === "phone"
-                ? "Телефон"
-                : field === "address"
-                ? "Адреса"
-                : field.charAt(0).toUpperCase() + field.slice(1);
+        try {
+            await updateDoc(saleRef, { [field]: updatedValue });
+            const index = data.findIndex((item) => item.id === id);
+            if (index !== -1) {
+                data[index][field] = updatedValue;
+            }
 
-        toast.success(`Редагування поля "${fieldName}" прийнято !`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
+            const fieldNames = {
+                client: "Клієнт",
+                ttn: "ТТН",
+                payment: "Спосіб оплати",
+                items: "Товар",
+                orderNumber: "Номер замовлення",
+                amount: "Сума",
+                phone: "Телефон",
+                address: "Адреса",
+            };
+
+            const fieldName = fieldNames[field] || field;
+
+            toast.success(`Редагування поля "${fieldName}" прийнято !`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        } catch (error) {
+            console.error("Помилка при збереженні:", error);
+            toast.error("Не вдалося зберегти зміни");
+        }
 
         setEditingCell(null);
     };
@@ -88,6 +86,34 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
     if (!data.length) return <p>Поки що немає продажів...</p>;
 
     const isOldOrder = (date) => dayjs().diff(dayjs(date), "day") >= 9;
+
+    const getRowColor = (status, date) => {
+        switch (status) {
+            case "Отримано":
+                return "lightgreen";
+            case "Відмова":
+                return "#fbb";
+            case "Відправлено":
+                return "#eeee90";
+            default:
+                return isOldOrder(date) ? "coral" : "transparent";
+        }
+    };
+
+    const isEditing = (id, field) =>
+        editingCell?.id === id && editingCell?.field === field;
+
+    const editInput = (type = "text") => (
+        <Field
+            type={type}
+            value={newValue}
+            onChange={handleChange}
+            onBlur={handleSave}
+            onKeyDown={handleKeyDown}
+            className="editInput"
+            autoFocus
+        />
+    );
 
     return (
         <table className={styles.table}>
@@ -102,247 +128,202 @@ const SalesTable = ({ data, received, handleCheckboxChange }) => {
                     <th>Форма оплати</th>
                     <th>Сума</th>
                     <th>ТТН</th>
-                    <th>Отримано</th>
+                    <th>Статус</th>
                 </tr>
             </thead>
             <tbody>
-                {data.map((sale) => {
-                    const isEditing = (field) =>
-                        editingCell?.id === sale.id &&
-                        editingCell?.field === field;
-                    const editInput = (field, value, type = "text") => (
-                        <Field
-                            type={type}
-                            value={newValue}
-                            onChange={handleChange}
-                            onBlur={handleSave}
-                            onKeyDown={handleKeyDown}
-                            className="editInput"
-                            autoFocus
-                        />
-                    );
-
-                    return (
-                        <tr
-                            key={sale.id}
+                {data.map((sale) => (
+                    <tr
+                        key={sale.id}
+                        style={{
+                            backgroundColor: getRowColor(
+                                sale.status,
+                                sale.date
+                            ),
+                        }}
+                    >
+                        <td
+                            onClick={() =>
+                                handleCellClick(
+                                    sale.id,
+                                    "orderNumber",
+                                    sale.orderNumber
+                                )
+                            }
                             style={{
-                                backgroundColor:
-                                    sale.status === "Отримано"
-                                        ? "lightgreen"
-                                        : sale.status === "Відмова"
-                                        ? "#fbb"
-                                        : sale.status === "Відправлено"
-                                        ? "#eeee90"
-                                        : isOldOrder(sale.date)
-                                        ? "coral"
-                                        : null,
+                                backgroundColor: isEditing(
+                                    sale.id,
+                                    "orderNumber"
+                                )
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
                             }}
                         >
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "orderNumber",
-                                        sale.orderNumber
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("orderNumber")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("orderNumber")
-                                    ? editInput("orderNumber", sale.orderNumber)
-                                    : sale.orderNumber}
-                            </td>
-                            <td>{dayjs(sale.date).format("DD.MM.YYYY")}</td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "items",
-                                        sale.items
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("items")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("items")
-                                    ? editInput("items", sale.items.join(", "))
-                                    : sale.items.map((item, i) => (
-                                          <p key={i}>{item}</p>
-                                      ))}
-                            </td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "client",
-                                        sale.client
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("client")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("client")
-                                    ? editInput("client", sale.client)
-                                    : sale.client}
-                            </td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "phone",
-                                        sale.phone
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("phone")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("phone")
-                                    ? editInput("phone", sale.phone)
-                                    : sale.phone}
-                            </td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "address",
-                                        sale.address
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("address")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("address")
-                                    ? editInput("address", sale.address)
-                                    : sale.address}
-                            </td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "payment",
-                                        sale.payment
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("payment")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("payment")
-                                    ? editInput("payment", sale.payment)
-                                    : sale.payment}
-                            </td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(
-                                        sale.id,
-                                        "amount",
-                                        sale.amount
-                                    )
-                                }
-                                style={{
-                                    backgroundColor: isEditing("amount")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("amount")
-                                    ? editInput("amount", sale.amount, "number")
-                                    : sale.amount}
-                            </td>
-                            <td
-                                onClick={() =>
-                                    handleCellClick(sale.id, "ttn", sale.ttn)
-                                }
-                                style={{
-                                    backgroundColor: isEditing("ttn")
-                                        ? "#d4fcd4"
-                                        : "transparent",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                {isEditing("ttn")
-                                    ? editInput("ttn", sale.ttn)
-                                    : sale.ttn}
-                            </td>
-                            <td>
-                                <Field
-                                    type="select"
-                                    name="status"
-                                    value={sale.status || "Не відправлено"}
-                                    onChange={async (e) => {
-                                        const newStatus = e.target.value;
-                                        const saleRef = doc(
-                                            db,
-                                            "sales",
-                                            sale.id
-                                        );
-                                        await updateDoc(saleRef, {
-                                            status: newStatus,
-                                        });
-                                        sale.status = newStatus;
+                            {isEditing(sale.id, "orderNumber")
+                                ? editInput()
+                                : sale.orderNumber}
+                        </td>
+                        <td>{dayjs(sale.date).format("DD.MM.YYYY")}</td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(sale.id, "items", sale.items)
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "items")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "items")
+                                ? editInput()
+                                : sale.items.map((item, i) => (
+                                      <p key={i}>{item}</p>
+                                  ))}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(sale.id, "client", sale.client)
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "client")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "client")
+                                ? editInput()
+                                : sale.client}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(sale.id, "phone", sale.phone)
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "phone")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "phone")
+                                ? editInput()
+                                : sale.phone}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(
+                                    sale.id,
+                                    "address",
+                                    sale.address
+                                )
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "address")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "address")
+                                ? editInput()
+                                : sale.address}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(
+                                    sale.id,
+                                    "payment",
+                                    sale.payment
+                                )
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "payment")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "payment")
+                                ? editInput()
+                                : sale.payment}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(sale.id, "amount", sale.amount)
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "amount")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "amount")
+                                ? editInput("number")
+                                : sale.amount}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(sale.id, "ttn", sale.ttn)
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "ttn")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "ttn") ? editInput() : sale.ttn}
+                        </td>
+                        <td>
+                            <Field
+                                type="select"
+                                name="status"
+                                value={sale.status || "Не відправлено"}
+                                onChange={async (e) => {
+                                    const newStatus = e.target.value;
+                                    const saleRef = doc(db, "sales", sale.id);
+                                    await updateDoc(saleRef, {
+                                        status: newStatus,
+                                    });
+                                    sale.status = newStatus;
 
-                                        if (newStatus === "Отримано") {
-                                            sendTelegramMessage(sale);
+                                    if (newStatus === "Отримано") {
+                                        sendTelegramMessage(sale);
+                                    }
+
+                                    toast.success(
+                                        `Статус змінено на "${newStatus}"`,
+                                        {
+                                            position: "top-right",
+                                            autoClose: 3000,
+                                            hideProgressBar: true,
+                                            closeOnClick: true,
+                                            pauseOnHover: true,
+                                            draggable: true,
                                         }
-
-                                        toast.success(
-                                            `Статус змінено на "${newStatus}"`,
-                                            {
-                                                position: "top-right",
-                                                autoClose: 3000,
-                                                hideProgressBar: true,
-                                                closeOnClick: true,
-                                                pauseOnHover: true,
-                                                draggable: true,
-                                            }
-                                        );
-                                    }}
-                                    className="statusSelect"
-                                    options={[
-                                        {
-                                            value: "Не відправлено",
-                                            label: "Не відправлено",
-                                        },
-                                        {
-                                            value: "Відправлено",
-                                            label: "Відправлено",
-                                        },
-                                        {
-                                            value: "Отримано",
-                                            label: "Отримано",
-                                        },
-                                        { value: "Відмова", label: "Відмова" },
-                                    ]}
-                                />
-                            </td>
-                        </tr>
-                    );
-                })}
+                                    );
+                                }}
+                                className="statusSelect"
+                                options={[
+                                    {
+                                        value: "Не відправлено",
+                                        label: "Не відправлено",
+                                    },
+                                    {
+                                        value: "Відправлено",
+                                        label: "Відправлено",
+                                    },
+                                    { value: "Отримано", label: "Отримано" },
+                                    { value: "Відмова", label: "Відмова" },
+                                ]}
+                            />
+                        </td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     );
