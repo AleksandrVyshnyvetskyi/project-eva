@@ -32,6 +32,6 @@ export const sendTelegramMessage = (sale) => {
         })
         .catch((error) => {
             console.error("❌ Помилка при надсиланні в Telegram:", error);
-            toast.error(`❌ Помилка при надсиланні в Telegram ${error}`)
+            toast.error(`❌ Помилка при надсиланні в Telegram: ${error}`)
         });
 };
