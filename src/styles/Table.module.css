@@ -24,7 +24,7 @@ thead th {
 }
 
 tbody tr, tbody tr p {
-    font-size: 12px;
+    font-size: 11px;
     color: #505050;
     line-height: 1.2;
     font-weight: unset;
@@ -36,7 +36,7 @@ tbody tr:hover {
 }
 
 tr {
-    height: 45px;
+    /* height: 45px; */
     transition: height 0.2s ease; 
     transition: width 0.2s ease;
     border-top: 1px solid #505050;
