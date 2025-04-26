@@ -63,6 +63,7 @@ const SalesTable = ({ data }) => {
                 amount: "Сума",
                 phone: "Телефон",
                 address: "Адреса",
+                additionalSales: "Додаткові продажі",
             };
 
             const fieldName = fieldNames[field] || field;
@@ -122,6 +123,7 @@ const SalesTable = ({ data }) => {
                     <th>№</th>
                     <th>Дата</th>
                     <th>Товар</th>
+                    <th>Додаткові продажі</th>
                     <th>Ім'я клієнта</th>
                     <th>Телефон</th>
                     <th>Адреса</th>
@@ -181,6 +183,21 @@ const SalesTable = ({ data }) => {
                                 : sale.items.map((item, i) => (
                                       <p key={i}>{item}</p>
                                   ))}
+                        </td>
+                        <td
+                            onClick={() =>
+                                handleCellClick(sale.id, "additionalSales", sale.additionalSales)
+                            }
+                            style={{
+                                backgroundColor: isEditing(sale.id, "additionalSales")
+                                    ? "#d4fcd4"
+                                    : "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {isEditing(sale.id, "additionalSales")
+                                ? editInput()
+                                : sale.additionalSales}
                         </td>
                         <td
                             onClick={() =>
