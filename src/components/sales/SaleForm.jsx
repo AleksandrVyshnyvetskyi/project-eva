@@ -20,6 +20,7 @@ const SaleForm = ({ onAdd }) => {
         phone: "",
         amount: "",
         ttn: "",
+        additionalSales: "",
     });
 
     const handleChange = (e, index) => {
@@ -59,7 +60,20 @@ const SaleForm = ({ onAdd }) => {
         onAdd({
             ...form,
             items: form.items.filter((item) => item.trim()),
+            
         });
+
+        toast.success(
+            `Замовлення прийнято 😎`,
+            {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            }
+        );
 
         setForm({
             orderNumber: "",
@@ -166,6 +180,13 @@ const SaleForm = ({ onAdd }) => {
                     { value: "О/Ч ПУМБ", label: "О/Ч ПУМБ" },
                     { value: "О/Ч Sens", label: "О/Ч Sens" },
                 ]}
+            />
+            <Field
+                className="saleField"
+                name="additionalSales"
+                placeholder="Додаткові продажі"
+                value={form.additionalSales}
+                onChange={handleChange}
             />
             <Button variant="buttonSubmit" type="submit">
                 Додати

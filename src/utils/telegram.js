@@ -15,6 +15,7 @@ export const sendTelegramMessage = (sale) => {
 Товар: <b>${sale.items.join(", ")}</b>
 Спосіб оплати: <b>${sale.payment}</b>
 Сума: <b>${sale.amount} грн</b>
+${sale.additionalSales ? `💵 Додаткові продажі: <b>${sale.additionalSales}</b>` : ''}
 `;
 
     axios
