@@ -8,6 +8,7 @@ import {
     updateDoc,
     getDoc,
 } from "firebase/firestore";
+import { useAuth } from "../context/AuthContext";
 import dayjs from "dayjs";
 import "dayjs/locale/uk";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,6 +21,7 @@ import Field from "../components/common/Field";
 import styles from "../styles/Sales.module.css";
 
 const Sales = () => {
+    const { role } = useAuth();
     dayjs.locale("uk");
     const [sales, setSale] = useState([]);
     const [received, setReceived] = useState({});
@@ -151,12 +153,17 @@ const Sales = () => {
                 normalizedPhone.includes(normalizedSearchQuery);
 
             const isCompleted = received[sale.id];
-            const isOverdue = dayjs().diff(dayjs(sale.date), "day") >= 9 && sale.status === "Відправлено";
-            const notCompleted = sale.status === "Відправлено" || sale.status === "Не відправлено"
+            const isOverdue =
+                dayjs().diff(dayjs(sale.date), "day") >= 9 &&
+                sale.status === "Відправлено";
+            const notCompleted =
+                sale.status === "Відправлено" ||
+                sale.status === "Не відправлено";
             const isRefusal = sale.status === "Відмова";
 
             if (filterStatus === "completed") return searchMatch && isCompleted;
-            if (filterStatus === "notCompleted") return searchMatch && notCompleted;
+            if (filterStatus === "notCompleted")
+                return searchMatch && notCompleted;
             if (filterStatus === "overdue") return searchMatch && isOverdue;
             if (filterStatus === "isRefusal") return searchMatch && isRefusal;
 
@@ -241,70 +248,76 @@ const Sales = () => {
     return (
         <>
             <h2 className={styles.title}>📦 Продажі:</h2>
-            <div className={styles.container}>
-                <div className={styles.left}>
-                    <Button variant="button" onClick={handleFormToggle}>
-                        {isFormVisible
-                            ? "Сховати форму ↑"
-                            : "Створити замовлення ↓"}
-                    </Button>
-                    <div
-                        className={`${styles.formPanel} ${
-                            isFormVisible ? styles.visible : ""
-                        }`}
-                    >
-                        <SaleForm onAdd={addSale} />
+            {role === "creater" || role === "admin" ? (
+                <div className={styles.container}>
+                    <div className={styles.left}>
+                        <Button variant="button" onClick={handleFormToggle}>
+                            {isFormVisible
+                                ? "Сховати форму ↑"
+                                : "Створити замовлення ↓"}
+                        </Button>
+                        <div
+                            className={`${styles.formPanel} ${
+                                isFormVisible ? styles.visible : ""
+                            }`}
+                        >
+                            <SaleForm onAdd={addSale} />
+                        </div>
                     </div>
-                </div>
-                <div className={styles.right}>
-                    <Button variant="button" onClick={handleButtonClick}>
-                        {isInputVisible ? "Сховати ↑" : "Пошук ↓"}
-                    </Button>
-                    <div
-                        className={`${styles.searchPanel} ${
-                            isInputVisible ? styles.visible : ""
-                        }`}
-                    >
-                        <div className={styles.group}>
-                            <svg
-                                viewBox="0 0 24 24"
-                                aria-hidden="true"
-                                className={styles.searchIcon}
-                            >
-                                <g>
-                                    <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z" />
-                                </g>
-                            </svg>
+                    <div className={styles.right}>
+                        <Button variant="button" onClick={handleButtonClick}>
+                            {isInputVisible ? "Сховати ↑" : "Пошук ↓"}
+                        </Button>
+                        <div
+                            className={`${styles.searchPanel} ${
+                                isInputVisible ? styles.visible : ""
+                            }`}
+                        >
+                            <div className={styles.group}>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    className={styles.searchIcon}
+                                >
+                                    <g>
+                                        <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z" />
+                                    </g>
+                                </svg>
+                                <Field
+                                    type="text"
+                                    className="searchInput"
+                                    placeholder="Введіть значення"
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                />
+                            </div>
                             <Field
-                                type="text"
+                                type="select"
                                 className="searchInput"
-                                placeholder="Введіть значення"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onChange={(e) =>
+                                    setFilterStatus(e.target.value)
+                                }
+                                value={filterStatus}
+                                options={[
+                                    { value: "all", label: "Усі" },
+                                    { value: "completed", label: "Завершені" },
+                                    {
+                                        value: "notCompleted",
+                                        label: "Не завершені",
+                                    },
+                                    {
+                                        value: "isRefusal",
+                                        label: "Відмова",
+                                    },
+                                    { value: "overdue", label: "Просрочені" },
+                                ]}
                             />
                         </div>
-                        <Field
-                            type="select"
-                            className="searchInput"
-                            onChange={(e) => setFilterStatus(e.target.value)}
-                            value={filterStatus}
-                            options={[
-                                { value: "all", label: "Усі" },
-                                { value: "completed", label: "Завершені" },
-                                {
-                                    value: "notCompleted",
-                                    label: "Не завершені",
-                                },
-                                {
-                                    value: "isRefusal",
-                                    label: "Відмова",
-                                },
-                                { value: "overdue", label: "Просрочені" },
-                            ]}
-                        />
                     </div>
                 </div>
-            </div>
+            ) : null}
 
             <div className={styles.monthNavigation}>
                 <div>

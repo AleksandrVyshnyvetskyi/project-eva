@@ -18,6 +18,7 @@ import Loader from "../loader/Loader";
 const AuthenticationForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -116,7 +117,7 @@ const AuthenticationForm = () => {
                     placeholder="ім'я@Пошта"
                 />
             </div>
-            <div className={styles.field}>
+            <div className={styles.field} style={{ position: "relative" }}>
                 <svg
                     className={styles.inputIcon}
                     xmlns="http://www.w3.org/2000/svg"
@@ -128,13 +129,29 @@ const AuthenticationForm = () => {
                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
                 </svg>
                 <Field
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className="loginInput"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete="on"
                     placeholder="Пароль"
                 />
+                <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                    }}
+                    aria-label="Показати або сховати пароль"
+                >
+                    {showPassword ? "🙈" : "👁️"}
+                </button>
             </div>
             <div className={styles.btn}>
                 <Button variant="buttonAuthentication">Вхід</Button>

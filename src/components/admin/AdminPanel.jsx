@@ -32,13 +32,16 @@ const AdminPanel = () => {
 
     const handleRoleChange = async (uid, newRole) => {
         const userRef = doc(db, "users", uid);
-        await updateDoc(userRef, { role: newRole });
-
-        setUsers((prev) =>
-            prev.map((user) =>
-                user.id === uid ? { ...user, role: newRole } : user
-            )
-        );
+        try {
+            await updateDoc(userRef, { role: newRole });
+            setUsers((prev) =>
+                prev.map((user) =>
+                    user.id === uid ? { ...user, role: newRole } : user
+                )
+            );
+        } catch (error) {
+            console.error("Помилка при зміні ролі:", error);
+        }
     };
 
     if (role !== "creater") {

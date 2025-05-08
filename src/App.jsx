@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 function AppContent() {
     const { role } = useAuth();
     const [theme, setTheme] = useState("dark");
-    const allowedRoles = ["admin", "creater"];
+    const allowedRoles = ["admin", "creater", "viewer"];
     const canViewNav = allowedRoles.includes(role);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ function AppContent() {
         setTheme(saved);
         document.documentElement.className = saved;
     }, []);
-    
+
     const toggleTheme = () => {
         const newTheme = theme === "dark" ? "light" : "dark";
         setTheme(newTheme);
@@ -33,7 +33,12 @@ function AppContent() {
                 <h2 className={style.title}>ЕВА</h2>
 
                 <nav>
-                    <input type="checkbox" className={style.themeCheckbox} checked={theme === "dark"} onChange={toggleTheme}/>
+                    <input
+                        type="checkbox"
+                        className={style.themeCheckbox}
+                        checked={theme === "dark"}
+                        onChange={toggleTheme}
+                    />
                     {canViewNav && (
                         <>
                             <Link className={style.link} to="/">
@@ -51,9 +56,11 @@ function AppContent() {
                             <Link className={style.link} to="/user">
                                 Мій профіль
                             </Link>
-                            <Link className={style.link} to="/creater">
-                                Панель адміністратора
-                            </Link>
+                            {role === "creater" || role === "admin" ? (
+                                <Link className={style.link} to="/creater">
+                                    Панель адміністратора
+                                </Link>
+                            ) : null}
                         </>
                     )}
                     <AuthenticationDetails />
