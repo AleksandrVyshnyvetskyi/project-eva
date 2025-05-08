@@ -4,6 +4,7 @@ import { db } from "../../firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../../context/AuthContext";
 
 import styles from "../../styles/Repairs.module.css";
 import Button from "../common/Button";
@@ -14,6 +15,7 @@ import RepairInfo from "./RepairInfo";
 import inv from "../../styles/Sales.module.css";
 
 const RepairsContainer = () => {
+    const { role } = useAuth();
     const [repairs, setRepairs] = useState([]);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [isRepairInfo, setIsRepairInfo] = useState(false);
@@ -100,24 +102,28 @@ const RepairsContainer = () => {
     return (
         <>
             <h2 className={styles.title}>⚙️ Відправки в сервіс:</h2>
-            <div className={styles.btnWrapper}>
-                <Button
-                    variant="width20"
-                    onClick={handleFormToggle}
-                    type="button"
-                >
-                    {isFormVisible ? "Сховати форму ↑" : "Створити відправку ↓"}
-                </Button>
-                <Button
-                    variant="width20"
-                    onClick={handleInformTableToggle}
-                    type="button"
-                >
-                    {isRepairInfo
-                        ? "Сховати інформація ↑"
-                        : "Інформація про сервіси ↓"}
-                </Button>
-            </div>
+            {role === "creater" || role === "admin" ? (
+                <div className={styles.btnWrapper}>
+                    <Button
+                        variant="width20"
+                        onClick={handleFormToggle}
+                        type="button"
+                    >
+                        {isFormVisible
+                            ? "Сховати форму ↑"
+                            : "Створити відправку ↓"}
+                    </Button>
+                    <Button
+                        variant="width20"
+                        onClick={handleInformTableToggle}
+                        type="button"
+                    >
+                        {isRepairInfo
+                            ? "Сховати інформація ↑"
+                            : "Інформація про сервіси ↓"}
+                    </Button>
+                </div>
+            ) : null}
 
             <div
                 className={`${inv.formPanel} ${
