@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import Field from "../common/Field";
 import styles from "../../styles/Repairs.module.css";
-import stylesTable from "../../styles/Table.module.css";
 import Loader from "../loader/Loader";
 
 const RepairOrdersTable = () => {
