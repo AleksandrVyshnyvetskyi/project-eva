@@ -58,6 +58,10 @@
     opacity: 1;
   }
 
+  .itemWithRemove {
+    position: relative;
+  }
+
   .searchPanel {
     width: 100%;
     overflow: hidden;
@@ -115,6 +119,7 @@
 
   .monthNavigation p {
     margin-bottom: 10px;
+    font-weight: 600;
   }
 
   .monthNavigation div {

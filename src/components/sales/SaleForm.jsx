@@ -38,6 +38,13 @@ const SaleForm = ({ onAdd }) => {
         setForm((prev) => ({ ...prev, items: [...prev.items, ""] }));
     };
 
+    const handleRemoveItem = (indexToRemove) => {
+        setForm((prev) => ({
+            ...prev,
+            items: prev.items.filter((_, index) => index !== indexToRemove),
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -50,8 +57,7 @@ const SaleForm = ({ onAdd }) => {
             !form.payment ||
             !form.phone ||
             !form.client ||
-            !form.amount ||
-            !form.ttn
+            !form.amount
         ) {
             toast.error("Будь ласка, заповніть усі обов'язкові поля!");
             return;
@@ -99,21 +105,31 @@ const SaleForm = ({ onAdd }) => {
                 onChange={handleChange}
             />
             <div className={styles.wrapper}>
-                {form.items.map((item, index) => (
+            {form.items.map((item, index) => (
+                <div key={index} className={styles.itemWithRemove}>
                     <Field
                         className="saleField"
-                        key={index}
                         type="text"
                         name="item"
                         placeholder="Товар на відправку"
                         value={item}
                         onChange={(e) => handleChange(e, index)}
                     />
-                ))}
+                    {index !== 0 && (
+                        <Button
+                            variant="removeButton"
+                            onClick={() => handleRemoveItem(index)}
+                            type="button"
+                        >
+                            ❌
+                        </Button>
+                    )}
+                </div>
+            ))}
                 <Button
                     variant="buttonAdd"
                     onClick={handleAddItem}
-                    type="submit"
+                    type="button"
                 >
                     Додати товар
                 </Button>
