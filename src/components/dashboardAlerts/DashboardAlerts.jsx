@@ -19,6 +19,11 @@ const DashboardAlerts = () => {
     return date;
   };
 
+  const truncate = (text, max = 40) => {
+    if (!text) return "";
+    return text.length > max ? text.slice(0, max) + "…" : text;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -120,8 +125,14 @@ const DashboardAlerts = () => {
                   onClick={() => openRepair(order)}
                 >
                   {d ? dayjs(d).format("DD.MM.YYYY") : "Немає дати"} —{" "}
-      <strong>{order.brand} {order.model}</strong>
-      {order.service && ` (${order.service})`}
+                  <strong>
+                  {truncate(`${order.brand} ${order.model}`, 30)}
+                  </strong>
+                  {order.service && (
+                    <span className={styles.muted}>
+                      {" "}({truncate(order.service, 25)})
+                    </span>
+                  )}
                 </li>
               );
             })}
@@ -141,8 +152,13 @@ const DashboardAlerts = () => {
                   key={order.id}
                   className={styles.delayedItem}
                   onClick={() => openSale(order)}
+                  title={order.items?.join(", ")}
                 >
-                  {d ? dayjs(d).format("DD.MM.YYYY") : "Немає дати"} — {order.items?.join(", ")}
+                  {d ? dayjs(d).format("DD.MM.YYYY") : "Немає дати"}
+                  {" - "}
+                  <strong>№{order.orderNumber}</strong>
+                  {" - "}
+                  {truncate(order.items?.join(", "), 40)}
                 </li>
               );
             })}

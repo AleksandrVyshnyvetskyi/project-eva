@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 15px;
     margin: 20px 0;
+    max-width: 70vw;
 }
 
 .alertCounters {
@@ -61,6 +62,11 @@
 .delayedItem:hover {
     color: var(--accent);
 }
+
+.muted {
+    opacity: 0.75;
+    font-size: 0.9em;
+  }
 
 @media (max-width: 768px) {
     .alertCounters {
