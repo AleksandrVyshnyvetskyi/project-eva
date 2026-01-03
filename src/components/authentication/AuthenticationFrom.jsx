@@ -113,7 +113,7 @@ const AuthenticationForm = () => {
                     className="loginInput"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="on"
+                    autoComplete="email"
                     placeholder="ім'я@Пошта"
                 />
             </div>
@@ -133,7 +133,7 @@ const AuthenticationForm = () => {
                     className="loginInput"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="on"
+                    autoComplete="password"
                     placeholder="Пароль"
                 />
                 <button

@@ -78,11 +78,12 @@ const RepairForm = ({ onAddRepair }) => {
                     required
                     options={[
                         { value: "", label: "Бренд", disabled: true },
+                        { value: "Apple", label: "Apple" },
                         { value: "Samsung", label: "Samsung" },
                         { value: "Xiaomi", label: "Xiaomi" },
+                        { value: "Oppo", label: "Oppo" },
+                        { value: "Doogee", label: "Doogee" },
                         { value: "Oscal", label: "Oscal" },
-                        { value: "Motorola", label: "Motorola" },
-                        { value: "Realme", label: "Realme" },
                         { value: "Nomi", label: "Nomi" },
                         { value: "Sigma", label: "Sigma" },
                         { value: "Ergo", label: "Ergo" },
