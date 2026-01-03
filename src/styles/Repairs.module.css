@@ -42,3 +42,17 @@
 .repairOrdersTables th:hover {
     color: var(--accent);
 }
+
+.highlightRow {
+    animation: highlightFade 2.5s ease-in-out;
+    outline: 3px solid #ff9800;
+  }
+  
+  @keyframes highlightFade {
+    0% {
+      background-color: #ffe0b2;
+    }
+    100% {
+      background-color: transparent;
+    }
+  }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { toast } from "react-toastify";
@@ -7,13 +7,14 @@ import Field from "../common/Field";
 import styles from "../../styles/Repairs.module.css";
 import Loader from "../loader/Loader";
 
-const RepairOrdersTable = () => {
+const RepairOrdersTable = ({ highlightId })  => {
     const [repairOrders, setRepairOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sortConfig, setSortConfig] = useState({
         key: "dateReceived",
         direction: "desc",
     });
+    const rowRefs = useRef({});
 
     useEffect(() => {
         const fetchRepairOrders = async () => {
@@ -109,6 +110,15 @@ const RepairOrdersTable = () => {
         return 0;
     });
 
+    useEffect(() => {
+        if (highlightId && rowRefs.current[highlightId]) {
+          rowRefs.current[highlightId].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, [highlightId, sortedOrders.length]);
+
     const SortArrow = ({ column }) =>
     sortConfig.key === column
         ? sortConfig.direction === "asc"
@@ -163,7 +173,12 @@ const RepairOrdersTable = () => {
                             };
 
                             return (
-                                <tr key={order.id} style={rowStyle}>
+                                <tr
+                                    key={order.id}
+                                    ref={(el) => (rowRefs.current[order.id] = el)}
+                                    className={order.id === highlightId ? styles.highlightRow : ""}
+                                    style={rowStyle}
+                                    >
                                     <td>
                                     {dayjs(
                                         order.dateReceived?.toDate?.() || order.dateReceived

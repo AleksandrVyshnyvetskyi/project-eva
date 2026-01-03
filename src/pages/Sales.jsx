@@ -25,6 +25,7 @@ const Sales = () => {
     const { role } = useAuth();
     dayjs.locale("uk");
     const location = useLocation();
+    const [highlightId, setHighlightId] = useState(null);
     const [scrollToId, setScrollToId] = useState(null);
     const [sales, setSale] = useState([]);
     const [received, setReceived] = useState({});
@@ -45,6 +46,22 @@ const Sales = () => {
         if (year && month) {
           setCurrentYear(Number(year));
           setCurrentMonth(Number(month));
+        }
+      }, [location.search]);
+
+      useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const year = searchParams.get("year");
+        const month = searchParams.get("month");
+        const highlight = searchParams.get("highlight");
+      
+        if (year && month) {
+          setCurrentYear(Number(year));
+          setCurrentMonth(Number(month));
+        }
+      
+        if (highlight) {
+          setHighlightId(highlight);
         }
       }, [location.search]);
 
@@ -379,6 +396,7 @@ const Sales = () => {
             </div>
             <SalesTable
                 data={sortedSales}
+                highlightId={highlightId}
                 handleCheckboxChange={handleCheckboxChange}
             />
             <div className={styles.containerForDownloadBtn}>

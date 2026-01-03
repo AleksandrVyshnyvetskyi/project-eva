@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { db } from "../../firebase/firebase";
 import { updateDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -8,9 +9,19 @@ import styles from "../../styles/Table.module.css";
 import Field from "../common/Field";
 import { sendTelegramMessage } from "../../utils/telegram";
 
-const SalesTable = ({ data }) => {
+const SalesTable = ({ data,highlightId }) => {
     const [editingCell, setEditingCell] = useState(null);
     const [newValue, setNewValue] = useState("");
+    const rowRefs = useRef({});
+
+    useEffect(() => {
+        if (highlightId && rowRefs.current[highlightId]) {
+          rowRefs.current[highlightId].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, [highlightId]);
 
     const handleCellClick = (id, field, currentValue) => {
         const valueToEdit = Array.isArray(currentValue)
@@ -136,14 +147,15 @@ const SalesTable = ({ data }) => {
             <tbody>
                 {data.map((sale) => (
                     <tr
-                        key={sale.id}
-                        style={{
-                            backgroundColor: getRowColor(
-                                sale.status,
-                                sale.date
-                            ),
-                        }}
-                    >
+                    key={sale.id}
+                    ref={(el) => (rowRefs.current[sale.id] = el)}
+                    className={
+                      sale.id === highlightId ? styles.highlightRow : ""
+                    }
+                    style={{
+                      backgroundColor: getRowColor(sale.status, sale.date),
+                    }}
+                  >
                         <td
                             onClick={() =>
                                 handleCellClick(

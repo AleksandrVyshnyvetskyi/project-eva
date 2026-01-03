@@ -63,6 +63,20 @@ tbody tr td {
     background-color: red;
 }
 
+.highlightRow {
+    animation: highlightFade 2.5s ease-in-out;
+    outline: 3px solid #ff9800;
+  }
+  
+  @keyframes highlightFade {
+    0% {
+      background-color: #ffe0b2;
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
 @media (max-width: 768px) {
     table {
         width: 100%;

@@ -35,7 +35,8 @@ const Home = () => {
 
             <div className={style.container}>{!user && <Authentication />}</div>
 
-            <DashboardAlerts/>
+            <div className={style.container}>{user && <DashboardAlerts/>}</div>
+            
             <ToastContainer />
         </>
     );
