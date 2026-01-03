@@ -59,6 +59,10 @@ tbody tr td {
     transition: all 0.3s ease;
 }
 
+.repairInfoTable tbody {
+    background-color: red;
+}
+
 @media (max-width: 768px) {
     table {
         width: 100%;

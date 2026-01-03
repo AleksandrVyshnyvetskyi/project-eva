@@ -115,7 +115,7 @@ const RepairForm = ({ onAddRepair }) => {
                     required
                     options={[
                         { value: "", label: "Оберіть Магазин", disabled: true },
-                        ...Array.from({ length: 13 }, (_, i) => ({
+                        ...Array.from({ length: 14 }, (_, i) => ({
                             value: `SmS ${i + 1}`,
                             label: `SmS ${i + 1}`,
                         })),

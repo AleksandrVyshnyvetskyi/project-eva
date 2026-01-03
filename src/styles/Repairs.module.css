@@ -19,3 +19,17 @@
     width: 100%;
     margin-bottom: 20px;
 }
+
+.repairInfoTable tbody td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.repairInfoTable tbody a {
+    color: var(--second-bg);
+    transition: all 0.3s ease;
+}
+
+.repairInfoTable tbody a:hover {
+    color: var(--accent);
+}
