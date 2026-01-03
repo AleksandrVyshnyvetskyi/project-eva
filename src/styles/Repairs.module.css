@@ -33,3 +33,12 @@
 .repairInfoTable tbody a:hover {
     color: var(--accent);
 }
+
+.repairOrdersTables th {
+    cursor: pointer;
+    user-select: none;
+}
+
+.repairOrdersTables th:hover {
+    color: var(--accent);
+}

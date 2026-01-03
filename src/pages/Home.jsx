@@ -3,6 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { ToastContainer } from "react-toastify";
 import Authentication from "../components/authentication/Authentication";
+import DashboardAlerts from "../components/dashboardAlerts/DashboardAlerts";
 import style from "../styles/Home.module.css";
 
 const Home = () => {
@@ -34,6 +35,7 @@ const Home = () => {
 
             <div className={style.container}>{!user && <Authentication />}</div>
 
+            <DashboardAlerts/>
             <ToastContainer />
         </>
     );

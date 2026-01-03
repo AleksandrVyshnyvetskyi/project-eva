@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/uk";
 import { ToastContainer, toast } from "react-toastify";
 import * as XLSX from "xlsx";
+import { useLocation } from "react-router-dom";
 import SaleForm from "../components/sales/SaleForm";
 import SalesTable from "../components/sales/SalesTable";
 import Loader from "../components/loader/Loader";
@@ -23,6 +24,8 @@ import styles from "../styles/Sales.module.css";
 const Sales = () => {
     const { role } = useAuth();
     dayjs.locale("uk");
+    const location = useLocation();
+    const [scrollToId, setScrollToId] = useState(null);
     const [sales, setSale] = useState([]);
     const [received, setReceived] = useState({});
     const [searchQuery, setSearchQuery] = useState("");
@@ -34,37 +37,47 @@ const Sales = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const year = searchParams.get("year");
+        const month = searchParams.get("month");
+        const id = searchParams.get("id");
+    
+        if (year && month) {
+          setCurrentYear(Number(year));
+          setCurrentMonth(Number(month));
+        }
+      }, [location.search]);
+
+      useEffect(() => {
         const fetchSales = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "sales"));
-                const salesData = querySnapshot.docs
-                    .filter((doc) => doc.exists())
-                    .map((doc) => ({
-                        id: doc.id,
-                        ...doc.data(),
-                    }));
-
-                const salesReceived = salesData.reduce((acc, sale) => {
-                    acc[sale.id] = sale.received || false;
-                    return acc;
-                }, {});
-
-                setSale(salesData);
-                setReceived(salesReceived);
-            } catch (error) {
-                toast.error("Помилка при завантаженні даних продажу");
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
+          try {
+            const querySnapshot = await getDocs(collection(db, "sales"));
+            const salesData = querySnapshot.docs
+              .filter((doc) => doc.exists())
+              .map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+    
+            const salesReceived = salesData.reduce((acc, sale) => {
+              acc[sale.id] = sale.received || false;
+              return acc;
+            }, {});
+    
+            setSale(salesData);
+            setReceived(salesReceived);
+          } catch (error) {
+            toast.error("Помилка при завантаженні даних продажу");
+            console.error(error);
+          } finally {
+            setIsLoading(false);
+          }
         };
-
+    
         fetchSales();
-    }, []);
-
-    if (isLoading) {
-        return <Loader />;
-    }
+      }, []);
+    
+      if (isLoading) return <Loader />;
 
     const handleFormToggle = () => {
         setIsFormVisible((prev) => !prev);

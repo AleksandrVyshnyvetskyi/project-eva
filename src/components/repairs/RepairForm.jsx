@@ -32,6 +32,7 @@ const RepairForm = ({ onAddRepair }) => {
 
         const newRepairOrder = {
             ...formData,
+            dateReceived: dayjs(formData.dateReceived).toDate(),
             repairStatusDate: dayjs(formData.dateReceived).toDate(),
         };
 
@@ -104,6 +105,9 @@ const RepairForm = ({ onAddRepair }) => {
                     placeholder="IMEI"
                     type="text"
                     value={formData.imei}
+                    inputMode="numeric"
+                    pattern="[0-9]{15}"
+                    maxLength={15}
                     onChange={handleChange}
                     required
                 />
@@ -125,7 +129,7 @@ const RepairForm = ({ onAddRepair }) => {
 
                 <Field
                     type="select"
-                    name="serviceInfo"
+                    name="service"
                     value={formData.service}
                     onChange={handleChange}
                     required

@@ -1,0 +1,69 @@
+.dashboardAlerts {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.alertCounters {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.alertCounter {
+    flex: 1;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    background-color: var(--bg);
+    border: 1px solid var(--accent);
+}
+
+.alertCounter:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: var(--form-bg);
+    box-shadow: var(--box-shadow);
+    font-weight: 500;
+}
+
+.repairAlert {
+    border-left: 5px solid coral;
+}
+
+.orderAlert {
+    border-left: 5px solid coral;
+}
+
+.noDelay {
+    border-left: 5px solid var(--accent);
+    background-color: var(--bg);
+    color: var(--second-accent);
+    font-weight: 600;
+}
+
+.delayedItem {
+    cursor: pointer;
+    margin: 4px 0;
+    transition: color 0.2s;
+}
+
+.delayedItem:hover {
+    color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .alertCounters {
+        flex-direction: column;
+    }
+}
