@@ -13,6 +13,10 @@ const SalesTable = ({ data,highlightId }) => {
     const [editingCell, setEditingCell] = useState(null);
     const [newValue, setNewValue] = useState("");
     const rowRefs = useRef({});
+    const [sortConfig, setSortConfig] = useState({
+        key: "date",
+        direction: "desc",
+    });
 
     useEffect(() => {
         if (highlightId && rowRefs.current[highlightId]) {
@@ -95,6 +99,64 @@ const SalesTable = ({ data,highlightId }) => {
         setEditingCell(null);
     };
 
+    const handleSort = (key) => {
+        setSortConfig((prev) => {
+            if (prev.key === key) {
+                return {
+                    key,
+                    direction: prev.direction === "asc" ? "desc" : "asc",
+                };
+            }
+            return { key, direction: "asc" };
+        });
+    };
+
+    const sortedData = [...data].sort((a, b) => {
+        const { key, direction } = sortConfig;
+    
+        let valueA = a[key];
+        let valueB = b[key];
+    
+        // null / undefined защита
+        if (valueA == null) valueA = "";
+        if (valueB == null) valueB = "";
+    
+        // дата
+        if (key === "date") {
+            valueA = dayjs(valueA);
+            valueB = dayjs(valueB);
+        }
+    
+        // массивы (items)
+        else if (Array.isArray(valueA)) {
+            valueA = valueA.join(", ").toLowerCase();
+            valueB = valueB.join(", ").toLowerCase();
+        }
+    
+        // числа
+        else if (typeof valueA === "number") {
+            valueA = Number(valueA);
+            valueB = Number(valueB);
+        }
+    
+        // всё остальное → строка
+        else {
+            valueA = String(valueA).toLowerCase();
+            valueB = String(valueB).toLowerCase();
+        }
+    
+        if (valueA < valueB) return direction === "asc" ? -1 : 1;
+        if (valueA > valueB) return direction === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    const SortArrow = ({ column }) =>
+    sortConfig.key === column
+        ? sortConfig.direction === "asc"
+            ? " ↑"
+            : " ↓"
+        : "";
+
     if (!data.length) return <p>Поки що немає продажів...</p>;
 
     const isOldOrder = (date) => dayjs().diff(dayjs(date), "day") >= 9;
@@ -131,21 +193,41 @@ const SalesTable = ({ data,highlightId }) => {
         <table className={styles.table}>
             <thead>
                 <tr>
-                    <th>№</th>
-                    <th>Дата</th>
-                    <th>Товар</th>
-                    <th>Додаткові продажі</th>
-                    <th>Ім'я клієнта</th>
-                    <th>Телефон</th>
-                    <th>Адреса</th>
-                    <th>Форма оплати</th>
-                    <th>Сума</th>
-                    <th>ТТН</th>
-                    <th>Статус</th>
+                <th onClick={() => handleSort("orderNumber")}>№ <SortArrow column="orderNumber" /></th>
+        <th onClick={() => handleSort("date")}>
+            Дата <SortArrow column="date" />
+        </th>
+        <th onClick={() => handleSort("items")}>
+            Товар <SortArrow column="items" />
+        </th>
+        <th onClick={() => handleSort("additionalSales")}>
+            Додаткові продажі <SortArrow column="additionalSales" />
+        </th>
+        <th onClick={() => handleSort("client")}>
+            Ім'я клієнта <SortArrow column="client" />
+        </th>
+        <th onClick={() => handleSort("phone")}>
+            Телефон <SortArrow column="phone" />
+        </th>
+        <th onClick={() => handleSort("address")}>
+            Адреса <SortArrow column="address" />
+        </th>
+        <th onClick={() => handleSort("payment")}>
+            Форма оплати <SortArrow column="payment" />
+        </th>
+        <th onClick={() => handleSort("amount")}>
+            Сума <SortArrow column="amount" />
+        </th>
+        <th onClick={() => handleSort("ttn")}>
+            ТТН <SortArrow column="ttn" />
+        </th>
+        <th onClick={() => handleSort("status")}>
+            Статус <SortArrow column="status" />
+        </th>
                 </tr>
             </thead>
             <tbody>
-                {data.map((sale) => (
+            {sortedData.map((sale) => (
                     <tr
                     key={sale.id}
                     ref={(el) => (rowRefs.current[sale.id] = el)}

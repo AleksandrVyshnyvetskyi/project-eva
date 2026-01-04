@@ -8,6 +8,7 @@
     transition: all 0.3s ease;
     border-radius: 4px;
     margin-bottom: 5px;
+    margin-top: 5px;
   }
   
   .input {
@@ -72,6 +73,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    margin-top: 5px;
     margin-bottom: 5px;
     font-size: 14px;
     color: var(--bg);
@@ -106,7 +108,7 @@
   }
 
   .statusSelect {
-    width: 170px;
+    width: 140px;
     padding: 4px 8px;
     font-size: 14px;
     border-radius: 6px;
