@@ -14,6 +14,7 @@ const RepairOrdersTable = ({ highlightId })  => {
         key: "dateReceived",
         direction: "desc",
     });
+    const [tooltip, setTooltip] = useState(null);
     const rowRefs = useRef({});
 
     useEffect(() => {
@@ -134,6 +135,11 @@ const RepairOrdersTable = ({ highlightId })  => {
         return <p>Поки що немає сервісних відправок...</p>;
     }
 
+    const truncate = (text, max = 40) => {
+        if (!text) return "";
+        return text.length > max ? text.slice(0, max) + "…" : text;
+      };
+
     return (
         <div className={styles.tableWrapper}>
             <table className={styles.repairOrdersTables}>
@@ -145,6 +151,7 @@ const RepairOrdersTable = ({ highlightId })  => {
                     <th onClick={() => handleSort("brand")}>Бренд <SortArrow column="brand" /></th>
                     <th onClick={() => handleSort("model")}>Модель <SortArrow column="model" /></th>
                     <th onClick={() => handleSort("imei")}>IMEI <SortArrow column="imei" /></th>
+                    <th onClick={() => handleSort("cause")}>Недолік <SortArrow column="cause" /></th>
                     <th onClick={() => handleSort("store")}>Магазин <SortArrow column="store" /></th>
                     <th onClick={() => handleSort("service")}>Сервіс <SortArrow column="service" /></th>
                     <th onClick={() => handleSort("isReturned")}>
@@ -187,6 +194,17 @@ const RepairOrdersTable = ({ highlightId })  => {
                                     <td>{order.brand}</td>
                                     <td>{order.model}</td>
                                     <td>{order.imei}</td>
+                                    <td
+                                        className={styles.tooltip}
+                                        onMouseEnter={(e) => setTooltip({
+                                            text: order.cause,
+                                            x: e.clientX - 20,
+                                            y: e.clientY - 20
+                                        })}
+                                        onMouseLeave={() => setTooltip(null)}
+                                        >
+                                        {order.cause && truncate(order.cause, 30)}
+                                        </td>
                                     <td>{order.store}</td>
                                     <td>{order.service}</td>
                                     <td>
@@ -205,6 +223,17 @@ const RepairOrdersTable = ({ highlightId })  => {
                         })}
                 </tbody>
             </table>
+            {tooltip && (
+                <div
+                    className={styles.tooltipFixed}
+                    style={{
+                    top: tooltip.y,
+                    left: tooltip.x
+                    }}
+                >
+                    {tooltip.text}
+                </div>
+                )}
         </div>
     );
 };

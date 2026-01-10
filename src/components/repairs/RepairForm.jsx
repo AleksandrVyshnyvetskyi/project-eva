@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import dayjs from "dayjs";
@@ -15,17 +15,39 @@ const RepairForm = ({ onAddRepair }) => {
         model: "",
         imei: "",
         store: "",
+        cause: "",
         service: "",
         isReturned: false,
     });
 
-    const handleChange = (e) => {
+    const brandToServiceMap = {
+        Xiaomi: "Майстерня №1",
+        Oppo: "Майстерня №1",
+        Apple: "Fyoocha",
+        Doogee: "Гратіс",
+        Samsung: "Samsung",
+        Motorola: "ТОВ mti-Сервис",
+        Oscal: "Elffix Сервіс",
+        Realme: "ТОВ РитейлКомпані",
+        Sigma: "ТОВ Дейна",
+        Ergo: "Сервіс сучасної електроніки",
+        Nomi: "Цифротех",
+      };
+
+      useEffect(() => {
+        setFormData((prev) => ({
+          ...prev,
+          service: brandToServiceMap[formData.brand] || "",
+        }));
+      }, [formData.brand]);
+
+      const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
-            ...prev,
-            [name]: value,
+          ...prev,
+          [name]: value,
         }));
-    };
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -79,15 +101,17 @@ const RepairForm = ({ onAddRepair }) => {
                     required
                     options={[
                         { value: "", label: "Бренд", disabled: true },
-                        { value: "Apple", label: "Apple" },
-                        { value: "Samsung", label: "Samsung" },
                         { value: "Xiaomi", label: "Xiaomi" },
                         { value: "Oppo", label: "Oppo" },
+                        { value: "Apple", label: "Apple" },
                         { value: "Doogee", label: "Doogee" },
+                        { value: "Samsung", label: "Samsung" },
+                        { value: "Motorola", label: "Motorola" },
                         { value: "Oscal", label: "Oscal" },
-                        { value: "Nomi", label: "Nomi" },
+                        { value: "Realme", label: "Realme" },
                         { value: "Sigma", label: "Sigma" },
                         { value: "Ergo", label: "Ergo" },
+                        { value: "Nomi", label: "Nomi" },
                     ]}
                 />
 
@@ -108,6 +132,15 @@ const RepairForm = ({ onAddRepair }) => {
                     inputMode="numeric"
                     pattern="[0-9]{15}"
                     maxLength={15}
+                    onChange={handleChange}
+                    required
+                />
+
+<Field
+                    name="cause"
+                    placeholder="Недолік"
+                    type="text"
+                    value={formData.cause}
                     onChange={handleChange}
                     required
                 />
@@ -135,23 +168,16 @@ const RepairForm = ({ onAddRepair }) => {
                     required
                     options={[
                         { value: "", label: "Оберіть Сервіс", disabled: true },
-                        { value: "ТОВ Дейна", label: "ТОВ Дейна (Sigma)" },
-                        {
-                            value: "ТОВ MTI Сервіс",
-                            label: "ТОВ MTI Сервіс (Motorola)",
-                        },
-                        {
-                            value: "Майстерня №1",
-                            label: "Майстерня №1 (Nomi/Realme/Xiaomi)",
-                        },
-                        { value: "Elffix", label: "Elffix (Oscal)" },
-                        { value: "FyooCha", label: "FyooCha (Samsung)" },
-                        { value: "СВП Плюс", label: "СВП Плюс (Nokia)" },
-                        {
-                            value: "Цитрус Сервіс/ТОВ'Рітейл Компані'",
-                            label: 'Цитрус Сервіс/ТОВ"Рітейл Компані" (Nomi)',
-                        },
-                        { value: "Юг", label: "Юг (Ergo)" },
+                        { value: "Майстерня №1", label: "Майстерня №1"},
+                        { value: "Fyoocha", label: "Fyoocha"},
+                        { value: "Гратіс", label: "Гратіс"},
+                        { value: "Samsung", label: "Samsung Сервіс"},
+                        { value: "ТОВ mti-Сервис", label: "ТОВ mti-Сервис"},
+                        { value: "Elffix Сервіс", label: "Elffix Сервіс"},
+                        { value: "ТОВ РитейлКомпані", label: "ТОВ РитейлКомпані"},
+                        { value: "ТОВ Дейна", label: "ТОВ Дейна"},
+                        { value: "Сервіс сучасної електроніки", label: "Сервіс сучасної електроніки"},
+                        { value: "Цифротех", label: "Цифротех"},
                     ]}
                 />
 

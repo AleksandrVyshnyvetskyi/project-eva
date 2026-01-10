@@ -46,9 +46,38 @@
 .highlightRow {
     animation: highlightFade 2.5s ease-in-out;
     outline: 3px solid #ff9800;
+}
+
+.tooltip {
+    position: relative;
+    cursor: default;
   }
+
+.tooltipFixed {
+    position: fixed;
+
+    font-size: 14px;
+    line-height: 1.2;
   
-  @keyframes highlightFade {
+    background: var(--second-bg);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 6px;
+  
+    box-shadow: var(--box-shadow);
+    max-width: 420px;
+    white-space: normal;
+  
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .phoneNumberColum {
+    min-width: 160px;
+  }
+
+  
+@keyframes highlightFade {
     0% {
       background-color: #ffe0b2;
     }
